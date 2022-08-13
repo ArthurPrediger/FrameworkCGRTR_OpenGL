@@ -44,13 +44,13 @@ void App::Run()
 	glShaderSource(fs, 1, &fragment_shader, nullptr);
 	glCompileShader(fs);
 	// identifica do programa, adiciona partes e faz "linkagem"
-	GLuint shader_programme = glCreateProgram();
-	glAttachShader(shader_programme, fs);
-	glAttachShader(shader_programme, vs);
-	glLinkProgram(shader_programme);
+	GLuint shader_program = glCreateProgram();
+	glAttachShader(shader_program, fs);
+	glAttachShader(shader_program, vs);
+	glLinkProgram(shader_program);
 
 	// Define shader_programme como o shader a ser utilizado
-	glUseProgram(shader_programme);
+	glUseProgram(shader_program);
 
 	GLfloat vertices[] = {
 		// Positions // Colors
@@ -83,12 +83,19 @@ void App::Run()
 		//com o shader atualmente em uso
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		glBindVertexArray(0);
+
 		glfwSwapBuffers(window->GetWindow());
 	}
 
+	glUseProgram(0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDetachShader(shader_program, vs);
+	glDetachShader(shader_program, fs);
 	glDeleteShader(vs);
 	glDeleteShader(fs);
-	glDeleteProgram(shader_programme);
+	glDeleteProgram(shader_program);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }
