@@ -152,12 +152,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Bindable.h" />
+    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="FragmentShader.h" />
+    <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="TestTriangle.h" />
+    <ClInclude Include="VAO.h" />
+    <ClInclude Include="VBO.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SimpleFragmentShader.txt" />
+    <Text Include="SimpleVertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
