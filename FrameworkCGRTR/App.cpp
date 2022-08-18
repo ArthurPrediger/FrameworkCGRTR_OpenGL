@@ -1,13 +1,14 @@
 #include "App.h"
-#include <iostream>
 #include "TestTriangle.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 App::App()
 	:
-	window(std::make_unique<Window>(640, 480, "FrameworkCGRTR's Window"))
+	window(std::make_unique<Window>(640, 480, "FrameworkCGRTR's Window")),
+	timer(Timer())
 {}
 
 void App::Run()
