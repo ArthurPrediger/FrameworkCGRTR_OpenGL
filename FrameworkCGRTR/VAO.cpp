@@ -2,7 +2,8 @@
 
 VAO::VAO()
 	:
-	Bindable("VAO")
+	Bindable("VAO"),
+	code("vao")
 {
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);

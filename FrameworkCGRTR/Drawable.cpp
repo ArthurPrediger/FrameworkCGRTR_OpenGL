@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "Drawable.h"
 #include "Bindable.h"
+#include "ShaderProgram.h"
 
 Drawable::Drawable(const std::vector<float>& vertices)
 	:
@@ -10,7 +11,7 @@ Drawable::Drawable(const std::vector<float>& vertices)
 
 void Drawable::Draw()
 {
-	for (auto& bindable : bindables)
+	for (auto& bindable : onDrawBindables)
 	{
 		bindable->Bind();
 	}
@@ -21,5 +22,17 @@ void Drawable::Draw()
 
 void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 {
-	bindables.push_back(std::move(bindable));
+	if (bindable->GetType() == "ShaderProgram" || bindable->GetType() == "VAO")
+	{
+		onDrawBindables.push_back(bindable);
+		if (bindable->GetType() == "ShaderProgram")
+		{
+			std::reinterpret_pointer_cast<ShaderProgram>(bindable)->Setup();
+		}
+	}
+	else
+	{
+		onInitializationBindables.push_back(bindable);
+		bindable->Bind();
+	}
 }

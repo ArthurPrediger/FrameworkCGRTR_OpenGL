@@ -10,7 +10,8 @@ public:
 	void Draw();
 	void AddBindable(std::shared_ptr<class Bindable> bindable);
 private:
-	std::vector<std::shared_ptr<Bindable>> bindables;
+	std::vector<std::shared_ptr<Bindable>> onInitializationBindables;
+	std::vector<std::shared_ptr<Bindable>> onDrawBindables;
 protected:
 	std::vector<float> vertices;
 };

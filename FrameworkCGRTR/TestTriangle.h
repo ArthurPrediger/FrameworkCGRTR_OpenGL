@@ -19,19 +19,19 @@ public:
 		0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f // Top 
 		})
 	{
-		auto vs = std::make_shared<VertexShader>(L"SimpleVertexShader.txt");
+		auto vs = std::make_shared<VertexShader>("SimpleVertexShader.txt");
 		AddBindable(vs);
 
-		auto fs = std::make_shared<FragmentShader>(L"SimpleFragmentShader.txt");
+		auto fs = std::make_shared<FragmentShader>("SimpleFragmentShader.txt");
 		AddBindable(fs);
 
-		auto ps = std::make_shared<ShaderProgram>(vs->GetVertexShaderID(), fs->GetFragmentShaderID());
+		auto ps = std::make_shared<ShaderProgram>(*vs, *fs);
 		AddBindable(ps);
 
 		auto vao = std::make_shared<VAO>();
 		AddBindable(vao);
 
-		auto vbo = std::make_shared<VBO>(vao->GetVAO_ID(), this->vertices);
+		auto vbo = std::make_shared<VBO>(*vao, this->vertices);
 		AddBindable(vbo);
 	}
 };

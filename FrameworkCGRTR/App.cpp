@@ -25,12 +25,6 @@ void App::Run()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//// Define vao como verte array atual 
-		//glBindVertexArray(VAO);
-		//// desenha pontos a partir do p0 e 3 no total do VAO atual
-		////com o shader atualmente em uso
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-
 		triangle.Draw();
 
 		glfwSwapBuffers(window->GetWindow());

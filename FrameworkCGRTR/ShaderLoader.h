@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-static void LoadShaderFromFile(const std::wstring& shader_path, std::string& shader)
+static void LoadShaderFromFile(const std::string& shader_path, std::string& shader)
 {
 	std::ifstream shader_file(shader_path);
 	

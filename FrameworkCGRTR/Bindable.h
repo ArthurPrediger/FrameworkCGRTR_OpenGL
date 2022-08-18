@@ -17,6 +17,7 @@ public:
 	{
 		return type;
 	}
+	virtual const std::string& GetCode() const = 0;
 private:
 	std::string type;
 };

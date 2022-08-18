@@ -1,25 +1,32 @@
 #include "ShaderProgram.h"
+#include "VertexShader.h"
+#include "FragmentShader.h"
 
-ShaderProgram::ShaderProgram(GLuint vs, GLuint fs)
+ShaderProgram::ShaderProgram(const VertexShader& vs, const FragmentShader& fs)
 	:
 	Bindable("ShaderProgram"),
+	code(vs.GetCode() + fs.GetCode()),
 	vs(vs),
-	fs(fs)
-{
-	sp = glCreateProgram();
-	glAttachShader(sp, vs);
-	glAttachShader(sp, fs);
-	glLinkProgram(sp);
-}
+	fs(fs),
+	sp(NULL)
+{}
 
 ShaderProgram::~ShaderProgram()
 {
-	glDetachShader(sp, vs);
-	glDetachShader(sp, fs);
+	glDetachShader(sp, vs.GetVertexShaderID());
+	glDetachShader(sp, fs.GetFragmentShaderID());
 	glDeleteProgram(sp);
 }
 
 void ShaderProgram::Bind()
 {
 	glUseProgram(sp);
+}
+
+void ShaderProgram::Setup()
+{
+	sp = glCreateProgram();
+	glAttachShader(sp, vs.GetVertexShaderID());
+	glAttachShader(sp, fs.GetFragmentShaderID());
+	glLinkProgram(sp);
 }
