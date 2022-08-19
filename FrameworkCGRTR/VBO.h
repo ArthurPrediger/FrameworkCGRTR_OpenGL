@@ -2,24 +2,24 @@
 
 #include "Bindable.h"
 #include <vector>
+#include <memory>
 
 class VBO : public Bindable
 {
+	friend class VAO;
 public:
-	VBO(class VAO& vao, const std::vector<float>& vertices);
+	VBO() = delete;
 	~VBO();
-	virtual void Bind() override;
-	virtual const std::string& GetCode() const override
-	{
-		return code;
-	}
+	static std::shared_ptr<VBO> Resolve(const std::vector<float>& vertices, const std::string& name);
 	GLuint GetVBO_ID() const
 	{
 		return vbo;
 	}
 private:
-	std::string code;
-	VAO& vao;
+	VBO(const std::vector<float>& vertices, const std::string& name);
+	void Bind() override;
+private:
 	const std::vector<float>& vertices;
+	GLuint vao;
 	GLuint vbo;
 };

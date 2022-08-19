@@ -2,26 +2,21 @@
 
 #include "Bindable.h"
 #include <vector>
+#include <memory>
 
 class VAO : public Bindable
 {
 public:
-	VAO();
 	~VAO();
-	virtual void Bind() override;
-	virtual const std::string& GetCode() const override
-	{
-		return code;
-	}
-	void VBOAdded(const std::string& vbo_code)
-	{
-		code.append(vbo_code);
-	}
+	void Bind() override;
 	GLuint GetVAO_ID() const
 	{
 		return vao;
 	}
+	static std::shared_ptr<VAO> Resolve(std::vector<std::shared_ptr<class VBO>> VBOs);
 private:
-	std::string code;
+	VAO(std::vector<std::shared_ptr<VBO>> VBOs);
+	void Generate();
+private:
 	GLuint vao;
 };

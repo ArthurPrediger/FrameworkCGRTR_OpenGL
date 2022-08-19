@@ -1,17 +1,14 @@
 #include "VBO.h"
 #include "VAO.h"
-#include <typeinfo>
+#include "BindableSet.h"
 
-VBO::VBO(VAO& vao, const std::vector<float>& vertices)
+VBO::VBO(const std::vector<float>& vertices, const std::string& name)
 	:
-	Bindable("VBO"),
-	code("vbo" + std::to_string(vertices.size())),
-	vao(vao),
+	Bindable("VBO", "VBO_" + name, BindType::OnInitilization),
 	vertices(vertices),
+	vao(NULL),
 	vbo(NULL)
-{
-	vao.VBOAdded(code);
-}
+{}
 
 VBO::~VBO()
 {
@@ -20,9 +17,16 @@ VBO::~VBO()
 	glDeleteBuffers(1, &vbo);
 }
 
+std::shared_ptr<VBO> VBO::Resolve(const std::vector<float>& vertices, const std::string& name)
+{
+	auto vbo = std::shared_ptr<VBO>(new VBO(vertices, name));
+	BindableSet::Resolve(vbo);
+	return vbo;
+}
+
 void VBO::Bind()
 {
-	glBindVertexArray(vao.GetVAO_ID());
+	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);

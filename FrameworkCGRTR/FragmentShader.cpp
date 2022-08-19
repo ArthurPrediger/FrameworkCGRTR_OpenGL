@@ -1,9 +1,10 @@
 #include "FragmentShader.h"
 #include "ShaderLoader.h"
+#include "BindableSet.h"
 
 FragmentShader::FragmentShader(const std::string& fs_path)
 	:
-	Bindable("FragmentShader"),
+	Bindable("FragmentShader", "FragmentShader_" + fs_path, BindType::OnInitilization),
 	fs_path(fs_path),
 	fs(NULL)
 {}
@@ -22,4 +23,15 @@ void FragmentShader::Bind()
 	fs = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fs, 1, &fragment_shader, nullptr);
 	glCompileShader(fs);
+}
+
+std::shared_ptr<FragmentShader> FragmentShader::Resolve(const std::string& fs_path)
+{
+	auto fs = std::shared_ptr<FragmentShader>(new FragmentShader(fs_path));
+	if (BindableSet::Resolve(fs))
+	{
+		fs->Bind();
+	}
+	return fs;
+	return nullptr;
 }

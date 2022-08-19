@@ -1,37 +1,37 @@
 #pragma once
 
-#include "Drawable.h"
+#include "Mesh.h"
 #include "VertexShader.h"
 #include "FragmentShader.h"
 #include "ShaderProgram.h"
 #include "VAO.h"
 #include "VBO.h"
 
-class TestTriangle : public Drawable
+class TestTriangle : public Mesh
 {
 public:
 	TestTriangle()
 		:
-		Drawable({
+		Mesh({
 		// Positions // Colors
 		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
 		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Left
 		0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f // Top 
 		})
 	{
-		auto vs = std::make_shared<VertexShader>("SimpleVertexShader.txt");
+		std::shared_ptr<VertexShader> vs = VertexShader::Resolve("SimpleVertexShader.txt");
 		AddBindable(vs);
 
-		auto fs = std::make_shared<FragmentShader>("SimpleFragmentShader.txt");
+		std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("SimpleFragmentShader.txt");
 		AddBindable(fs);
 
-		auto ps = std::make_shared<ShaderProgram>(*vs, *fs);
+		std::shared_ptr<ShaderProgram> ps = ShaderProgram::Resolve(vs, fs);
 		AddBindable(ps);
 
-		auto vao = std::make_shared<VAO>();
-		AddBindable(vao);
-
-		auto vbo = std::make_shared<VBO>(*vao, this->vertices);
+		std::shared_ptr<VBO> vbo = VBO::Resolve(vertices, "TestTriangle");
 		AddBindable(vbo);
+
+		std::shared_ptr<VAO> vao = VAO::Resolve({vbo});
+		AddBindable(vao);
 	}
 };

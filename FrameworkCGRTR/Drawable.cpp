@@ -3,6 +3,7 @@
 #include "Drawable.h"
 #include "Bindable.h"
 #include "ShaderProgram.h"
+#include "BindableSet.h"
 
 Drawable::Drawable(const std::vector<float>& vertices)
 	:
@@ -22,17 +23,12 @@ void Drawable::Draw()
 
 void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 {
-	if (bindable->GetType() == "ShaderProgram" || bindable->GetType() == "VAO")
+	if (bindable->GetBindType() == Bindable::BindType::OnDraw)
 	{
 		onDrawBindables.push_back(bindable);
-		if (bindable->GetType() == "ShaderProgram")
-		{
-			std::reinterpret_pointer_cast<ShaderProgram>(bindable)->Setup();
-		}
 	}
 	else
 	{
 		onInitializationBindables.push_back(bindable);
-		bindable->Bind();
 	}
 }
