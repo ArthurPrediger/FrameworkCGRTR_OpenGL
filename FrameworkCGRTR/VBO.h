@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Bindable.h"
+#include "Mesh.h"
 #include <vector>
 #include <memory>
 
@@ -10,16 +11,16 @@ class VBO : public Bindable
 public:
 	VBO() = delete;
 	~VBO();
-	static std::shared_ptr<VBO> Resolve(const std::vector<float>& vertices, const std::string& name);
+	static std::shared_ptr<VBO> Resolve(const std::vector<Mesh::Vertex>& vertices, const std::string& name);
 	GLuint GetVBO_ID() const
 	{
 		return vbo;
 	}
 private:
-	VBO(const std::vector<float>& vertices, const std::string& name);
+	VBO(const std::vector<Mesh::Vertex>& vertices, const std::string& name);
 	void Bind() override;
 private:
-	const std::vector<float>& vertices;
+	std::vector<Mesh::Vertex> vertices;
 	GLuint vao;
 	GLuint vbo;
 };

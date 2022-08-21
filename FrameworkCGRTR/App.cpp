@@ -1,5 +1,5 @@
 #include "App.h"
-#include "TestTriangle.h"
+#include "TestDiamond.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -22,14 +22,14 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	TestTriangle triangle;
+	TestDiamond triangle;
 
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		triangle.Draw();
+		triangle.Draw(timer.Tick());
 
 		glfwSwapBuffers(window->GetWindow());
 	}

@@ -5,7 +5,7 @@
 
 ShaderProgram::ShaderProgram(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
 	:
-	Bindable("ShaderProgram", "ShaderProgram_" + vs->GetUniqueID() + "_" + fs->GetUniqueID(), BindType::OnDraw),
+	Bindable("ShaderProgram", "SP_" + vs->GetUniqueID() + "_" + fs->GetUniqueID(), BindType::OnDraw),
 	vs(vs),
 	fs(fs),
 	sp(NULL)

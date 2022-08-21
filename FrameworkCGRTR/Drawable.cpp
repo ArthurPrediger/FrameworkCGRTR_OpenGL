@@ -4,10 +4,11 @@
 #include "Bindable.h"
 #include "ShaderProgram.h"
 #include "BindableSet.h"
+#include "Mesh.h"
 
-Drawable::Drawable(const std::vector<float>& vertices)
+Drawable::Drawable(size_t numVertices)
 	:
-	vertices(vertices)
+	numVertices(numVertices)
 {}
 
 void Drawable::Draw()
@@ -16,7 +17,7 @@ void Drawable::Draw()
 	{
 		bindable->Bind();
 	}
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, GLsizei(numVertices));
 	glBindVertexArray(0);
 	glUseProgram(0);
 }

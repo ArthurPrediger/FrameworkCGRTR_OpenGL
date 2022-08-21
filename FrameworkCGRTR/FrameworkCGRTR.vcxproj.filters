@@ -22,6 +22,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{a217c4d7-7bd9-415c-947b-dba9fb5cc6ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unused">
+      <UniqueIdentifier>{e0b220fa-75bd-449e-81b0-fd8628051e0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -83,7 +89,7 @@
     <ClInclude Include="FragmentShader.h">
       <Filter>Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="TestTriangle.h">
+    <ClInclude Include="TestDiamond.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram.h">
@@ -100,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="BindableSet.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformLocation.h">
+      <Filter>Unused</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

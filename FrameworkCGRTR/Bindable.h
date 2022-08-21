@@ -9,7 +9,7 @@ class Bindable
 public:
 	enum class BindType
 	{
-		OnInitilization,
+		OnInitialization,
 		OnDraw
 	};
 public:

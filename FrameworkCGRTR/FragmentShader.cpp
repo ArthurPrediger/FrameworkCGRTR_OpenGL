@@ -4,7 +4,7 @@
 
 FragmentShader::FragmentShader(const std::string& fs_path)
 	:
-	Bindable("FragmentShader", "FragmentShader_" + fs_path, BindType::OnInitilization),
+	Bindable("FragmentShader", "FS_" + fs_path, BindType::OnInitialization),
 	fs_path(fs_path),
 	fs(NULL)
 {}

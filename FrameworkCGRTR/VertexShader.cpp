@@ -4,7 +4,7 @@
 
 VertexShader::VertexShader(const std::string& vs_path)
 	:
-	Bindable("VertexShader", "VertexShader_" + vs_path, BindType::OnInitilization),
+	Bindable("VertexShader", "VS_" + vs_path, BindType::OnInitialization),
 	vs_path(vs_path),
 	vs(NULL)
 {}

@@ -6,12 +6,12 @@
 class Drawable
 {
 public:
-	Drawable(const std::vector<float>& vertices);
+	Drawable(size_t numVertices);
 	void Draw();
 	void AddBindable(std::shared_ptr<class Bindable> bindable);
 private:
 	std::vector<std::shared_ptr<Bindable>> onInitializationBindables;
 	std::vector<std::shared_ptr<Bindable>> onDrawBindables;
-protected:
-	std::vector<float> vertices;
+private:
+	size_t numVertices;
 };

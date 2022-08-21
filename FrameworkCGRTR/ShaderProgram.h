@@ -10,6 +10,10 @@ public:
 	~ShaderProgram();
 	void Bind() override;
 	static std::shared_ptr<ShaderProgram> Resolve(std::shared_ptr<class VertexShader> vs, std::shared_ptr<class FragmentShader> fs);
+	GLuint GetShaderProgramID() const
+	{
+		return sp;
+	}
 private:
 	ShaderProgram(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs);
 	void Create();
