@@ -111,7 +111,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocation.h">
-      <Filter>Unused</Filter>
+      <Filter>Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

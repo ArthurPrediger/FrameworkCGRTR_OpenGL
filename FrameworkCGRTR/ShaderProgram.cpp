@@ -2,6 +2,7 @@
 #include "VertexShader.h"
 #include "FragmentShader.h"
 #include "BindableSet.h"
+#include <stdexcept>
 
 ShaderProgram::ShaderProgram(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
 	:
@@ -21,6 +22,11 @@ ShaderProgram::~ShaderProgram()
 void ShaderProgram::Bind()
 {
 	glUseProgram(sp);
+
+	for (auto& unifLocs : uniformLocations)
+	{
+		unifLocs->Bind();
+	}
 }
 
 std::shared_ptr<ShaderProgram> ShaderProgram::Resolve(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
@@ -39,4 +45,16 @@ void ShaderProgram::Create()
 	glAttachShader(sp, vs->GetVertexShaderID());
 	glAttachShader(sp, fs->GetFragmentShaderID());
 	glLinkProgram(sp);
+}
+
+void ShaderProgram::AddUniformLocationBindable(std::shared_ptr<Bindable> uniformLocation)
+{
+	if (uniformLocation->GetType() != "UniformLocation")
+	{
+		throw std::runtime_error("Trying to add bindable different from UniformLocation to ShaderProgram!");
+	}
+	else
+	{
+		uniformLocations.push_back(uniformLocation);
+	}
 }
