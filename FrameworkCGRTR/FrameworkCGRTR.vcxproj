@@ -179,7 +179,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="TestCube.h" />
+    <ClInclude Include="TestDiamond.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UniformLocation.h" />
     <ClInclude Include="VAO.h" />
