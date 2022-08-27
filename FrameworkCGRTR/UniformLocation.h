@@ -15,26 +15,37 @@ class UniformLocation : public Bindable
 {
 	friend class ShaderProgram;
 public:
-	static std::shared_ptr<UniformLocation<T>> Resolve(std::shared_ptr<ShaderProgram> sp, const std::string& unifLocName, std::shared_ptr<T> unifLocData)
-	{
-		auto uniformLocation = std::shared_ptr<UniformLocation<T>>(new UniformLocation(sp, unifLocName, unifLocData));
-		BindableSet::Resolve(uniformLocation);
-		return uniformLocation;
-	};
-	UniformLocation() = delete;
-	~UniformLocation() = default;
-	std::shared_ptr<T> GetPointerToData() const
-	{
-		return unifLocData;
-	}
-private:
-	UniformLocation(std::shared_ptr<ShaderProgram> sp, const std::string& unifLocName, std::shared_ptr<T> unifLocData)
+	UniformLocation(std::shared_ptr<ShaderProgram> sp, const std::string& unifLocName, std::shared_ptr<T>& unifLocData)
 		:
-		Bindable("UniformLocation", "UN_" + unifLocName + "_" + sp->GetUniqueID(), BindType::OnDraw),
+		Bindable("UniformLocation", BindType::OnDraw),
 		spID(sp->GetShaderProgramID()),
 		unifLocName(unifLocName),
 		unifLocData(unifLocData)
 	{};
+	UniformLocation() = delete;
+	~UniformLocation() = default;
+	static std::shared_ptr<UniformLocation<T>> Resolve(std::shared_ptr<ShaderProgram> sp, const std::string& unifLocName, std::shared_ptr<T>& unifLocData)
+	{
+		auto pair = BindableSet::Resolve<UniformLocation>(sp, unifLocName, unifLocData);
+		if (pair.first)
+		{
+			unifLocData = pair.second->unifLocData;
+		}
+		return pair.second;
+	};
+	static std::string GetUniqueID(std::shared_ptr<ShaderProgram> sp, const std::string& unifLocName, std::shared_ptr<T> unifLocData)
+	{
+		return "UN_" + unifLocName + "_" + sp->GetName();
+	};
+	std::shared_ptr<T> GetPointerToData() const
+	{
+		return unifLocData;
+	}
+	const std::string& GetName() const override
+	{
+		return unifLocName;
+	}
+private:
 	void Bind() override
 	{
 		throw std::runtime_error("Unsupported template type");

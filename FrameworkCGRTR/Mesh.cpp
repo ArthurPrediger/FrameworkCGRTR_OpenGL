@@ -13,6 +13,16 @@ void Mesh::AddGroup(const std::string& groupName, const std::vector<Group::Face>
 	groups.emplace_back(Group{ groupName, faces });
 }
 
+Group* Mesh::QueryGroup(size_t groupIndex)
+{
+	if (groupIndex < groups.size())
+	{
+		return &groups[groupIndex];
+	}
+
+	return nullptr;
+}
+
 Group* Mesh::QueryGroup(const std::string& name)
 {
 	for (Group& group : groups)

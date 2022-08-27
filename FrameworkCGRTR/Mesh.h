@@ -25,6 +25,7 @@ public:
 public:
 	Mesh(const Vertices& vertices);
 	void AddGroup(const std::string& groupName, const std::vector<Group::Face>& faces);
+	Group* QueryGroup(size_t groupIndex);
 	Group* QueryGroup(const std::string& groupName);
 	Vertices GetVertices() const
 	{

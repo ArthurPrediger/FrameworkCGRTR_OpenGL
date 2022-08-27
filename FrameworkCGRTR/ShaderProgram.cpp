@@ -6,7 +6,8 @@
 
 ShaderProgram::ShaderProgram(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
 	:
-	Bindable("ShaderProgram", "SP_" + vs->GetUniqueID() + "_" + fs->GetUniqueID(), BindType::OnDraw),
+	Bindable("ShaderProgram", BindType::OnDraw),
+	name("SP_" + VertexShader::GetUniqueID(vs->GetFilePath()) + "_" + FragmentShader::GetUniqueID(fs->GetFilePath())),
 	vs(vs),
 	fs(fs),
 	sp(NULL)
@@ -31,13 +32,18 @@ void ShaderProgram::Bind()
 
 std::shared_ptr<ShaderProgram> ShaderProgram::Resolve(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
 {
-	auto ps = std::shared_ptr<ShaderProgram>(new ShaderProgram(vs, fs));
-	if (BindableSet::Resolve(ps))
+	auto pair = BindableSet::Resolve<ShaderProgram>(vs, fs);
+	if (!pair.first)
 	{
-		ps->Create();
+		pair.second->Create();
 	}
-	return ps;
+	return pair.second;
 }
+
+std::string ShaderProgram::GetUniqueID(std::shared_ptr<VertexShader> vs, std::shared_ptr<FragmentShader> fs)
+{
+	return "SP_" + VertexShader::GetUniqueID(vs->GetFilePath()) + "_" + FragmentShader::GetUniqueID(fs->GetFilePath());
+};
 
 void ShaderProgram::Create()
 {
@@ -55,6 +61,11 @@ void ShaderProgram::AddUniformLocationBindable(std::shared_ptr<Bindable> uniform
 	}
 	else
 	{
+		for (auto& unifLoc : uniformLocations)
+		{
+			if (unifLoc->GetName() == uniformLocation->GetName())
+				return;
+		}
 		uniformLocations.push_back(uniformLocation);
 	}
 }

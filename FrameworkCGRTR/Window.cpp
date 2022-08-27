@@ -22,6 +22,8 @@ Window::Window(int width, int height, const std::string& name)
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
+
+	glfwSetWindowSizeCallback(window, Window::Resize);
 }
 
 Window::~Window()
@@ -35,5 +37,4 @@ void Window::Resize(GLFWwindow* window, int width, int height)
 	auto pWindow = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 	pWindow->width = width;
 	pWindow->height = height;
-	pWindow->wasResized = true;
 }

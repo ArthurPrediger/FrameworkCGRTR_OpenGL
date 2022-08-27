@@ -4,14 +4,9 @@
 
 VAO::VAO(std::vector<std::shared_ptr<VBO>> VBOs)
 	:
-	Bindable("VAO", "VAO_", BindType::OnDraw),
+	Bindable("VAO", BindType::OnDraw),
 	vao(NULL)
-{
-	for (size_t i = 0; i < VBOs.size(); i++)
-	{
-		uID.append(VBOs[i]->GetUniqueID());
-	}
-}
+{}
 
 VAO::~VAO()
 {
@@ -25,18 +20,30 @@ void VAO::Bind()
 
 std::shared_ptr<VAO> VAO::Resolve(std::vector<std::shared_ptr<VBO>> VBOs)
 {
-	auto vao = std::shared_ptr<VAO>(new VAO(VBOs));
-	if (BindableSet::Resolve(vao))
+	auto pair = BindableSet::Resolve<VAO>(VBOs);
+	if (!pair.first)
 	{
-		vao->Generate();
+		pair.second->Generate();
 		for (size_t i = 0; i < VBOs.size(); i++)
 		{
-			VBOs[i]->vao = vao->vao;
+			VBOs[i]->vao = pair.second->vao;
 			VBOs[i]->Bind();
 		}
 	}
-	return vao;
+	return pair.second;
 }
+
+std::string VAO::GetUniqueID(std::vector<std::shared_ptr<class VBO>> VBOs)
+{
+	std::string uID = "VAO_";
+
+	for (size_t i = 0; i < VBOs.size(); i++)
+	{
+		uID.append(VBOs[i]->GetName());
+	}
+
+	return uID;
+};
 
 void VAO::Generate()
 {

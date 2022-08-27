@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include <assert.h>
 
 class Bindable
 {
@@ -13,19 +14,23 @@ public:
 		OnDraw
 	};
 public:
-	Bindable(const std::string& type, const std::string& uID, const BindType& bind_type)
+	Bindable(const std::string& type, const BindType& bind_type)
 		:
 		type(type),
-		uID(uID),
 		bind_type(bind_type)
 	{}
 	virtual ~Bindable() = default;
 	virtual void Bind() = 0;
-	const std::string& GetUniqueID() const
+	virtual std::string GetUniqueID()
 	{
-		return uID;
+		assert(false);
+		return "";
 	};
 	const std::string& GetType() const
+	{
+		return type;
+	}
+	virtual const std::string& GetName() const
 	{
 		return type;
 	}
@@ -33,8 +38,6 @@ public:
 	{
 		return bind_type;
 	}
-protected:
-	std::string uID;
 private:
 	std::string type;
 	BindType bind_type;

@@ -4,7 +4,8 @@
 
 VBO::VBO(const std::vector<Mesh::Vertex>& vertices, const std::string& name)
 	:
-	Bindable("VBO", "VBO_" + name, BindType::OnInitialization),
+	Bindable("VBO", BindType::OnInitialization),
+	name(name),
 	vertices(vertices),
 	vao(NULL),
 	vbo(NULL)
@@ -19,10 +20,14 @@ VBO::~VBO()
 
 std::shared_ptr<VBO> VBO::Resolve(const std::vector<Mesh::Vertex>& vertices, const std::string& name)
 {
-	auto vbo = std::shared_ptr<VBO>(new VBO (vertices, name));
-	BindableSet::Resolve(vbo);
-	return vbo;
+	auto vbo = BindableSet::Resolve<VBO>(vertices, name);
+	return vbo.second;
 }
+
+std::string VBO::GetUniqueID(const std::vector<Mesh::Vertex>& vertices, const std::string& name)
+{
+	return "VBO_" + name;
+};
 
 void VBO::Bind()
 {

@@ -6,28 +6,28 @@
 class Window
 {
 public:
+	struct Dimensions
+	{
+		int width;
+		int height;
+	};
+public:
 	Window(int width, int height, const std::string& name);
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
-	bool WasResized() const
-	{
-		return wasResized;
-	}
-	void ResizeHandled()
-	{
-		wasResized = false;
-	}
 	GLFWwindow* GetWindow() const
 	{
 		return window;
 	}
-private:
+	Dimensions GetDimensions()
+	{
+		return { width, height };
+	}
 	static void Resize(GLFWwindow* window, int width, int height);
 private:
 	int width;
 	int height;
 	std::string name;
-	bool wasResized = false;
 	GLFWwindow* window = nullptr;
 };

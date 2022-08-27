@@ -4,7 +4,7 @@
 
 VertexShader::VertexShader(const std::string& vs_path)
 	:
-	Bindable("VertexShader", "VS_" + vs_path, BindType::OnInitialization),
+	Bindable("VertexShader", BindType::OnInitialization),
 	vs_path(vs_path),
 	vs(NULL)
 {}
@@ -25,12 +25,17 @@ void VertexShader::Bind()
 	glCompileShader(vs);
 }
 
-std::shared_ptr<VertexShader> VertexShader::Resolve(const std::string& fs_path)
+std::shared_ptr<VertexShader> VertexShader::Resolve(const std::string& vs_path)
 {
-	auto vs = std::shared_ptr<VertexShader>(new VertexShader(fs_path));
-	if (BindableSet::Resolve(vs))
+	auto pair = BindableSet::Resolve<VertexShader>(vs_path);
+	if (!pair.first)
 	{
-		vs->Bind();
+		pair.second->Bind();
 	}
-	return vs;
+	return pair.second;
 }
+
+std::string VertexShader::GetUniqueID(const std::string& vs_path)
+{
+	return "VS_" + vs_path;
+};

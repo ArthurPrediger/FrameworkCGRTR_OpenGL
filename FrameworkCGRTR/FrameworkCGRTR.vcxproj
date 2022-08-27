@@ -172,13 +172,14 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableSet.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="TestDiamond.h" />
+    <ClInclude Include="TestCube.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UniformLocation.h" />
     <ClInclude Include="VAO.h" />

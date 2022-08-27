@@ -1,5 +1,5 @@
 #include "App.h"
-#include "TestDiamond.h"
+#include "TestCube.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -22,14 +22,45 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	TestDiamond triangle;
+	TestCube cube;
+	TestCube cube1;
+
+	glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		triangle.Draw(timer.Tick());
+		glViewport(0, 0, window->GetDimensions().width, window->GetDimensions().height);
+
+		const float dt = timer.Tick();
+
+		cube.angle += glm::pi<float>() * dt / 5;
+
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(50.0f), (float)window->GetDimensions().width / (float)window->GetDimensions().height, 0.1f, 100.0f);
+
+		glm::mat4 view = glm::identity<glm::mat4>();
+		view = glm::translate(view, { 1.0f, 0.0f, -3.0f });
+		view = glm::rotate(view, cube.angle, { 1.0f, 1.0f, 0.0f });
+
+		*cube.transform = projection * view;
+
+		cube.Draw(dt);
+
+		cube1.angle += glm::pi<float>() * dt / 5;
+
+		view = glm::identity<glm::mat4>();
+		view = glm::translate(view, { -1.0f, 0.0f, -3.0f });
+		view = glm::rotate(view, cube1.angle, { 1.0f, 1.0f, 0.0f });
+
+		*cube1.transform = projection * view;
+
+		cube1.Draw(dt);
 
 		glfwSwapBuffers(window->GetWindow());
 	}

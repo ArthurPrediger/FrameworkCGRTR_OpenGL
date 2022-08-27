@@ -1,31 +1,35 @@
 #pragma once
 
 #include "Bindable.h"
-#include <unordered_map>
+#include <type_traits>
 #include <memory>
+#include <unordered_map>
 
 class BindableSet
 {
 public:
-	static bool Resolve(std::shared_ptr<Bindable> bindable)
+	template<class T, typename...Params>
+	static std::pair<bool, std::shared_ptr<T>> Resolve(Params&&... p)
 	{
-		return Get().Resolve_(bindable);
+		static_assert(std::is_base_of<Bindable, T>::value, "Can only resolve classes derived from Bindable");
+		return Get().Resolve_<T>(std::forward<Params>(p)...);
 	};
 private:
-	bool Resolve_(std::shared_ptr<Bindable> bindable)
+	template<class T, typename...Params>
+	std::pair<bool, std::shared_ptr<T>> Resolve_(Params&&... p)
 	{
-		const auto i = bindables_set.find(bindable->GetUniqueID());
+		const auto key = T::GetUniqueID(std::forward<Params>(p)...);
+		const auto i = bindables_set.find(key);
 		
 		if (i == bindables_set.end())
 		{
-			bindables_set[bindable->GetUniqueID()] = bindable;
-			return true;
+			auto bindable = std::make_shared<T>(std::forward<Params>(p)...);
+			bindables_set[key] = bindable;
+			return { false, bindable };
 		}
 		else
 		{
-			bindable.reset();
-			bindable = i->second;
-			return false;
+			return { true, std::static_pointer_cast<T>(i->second) };
 		}
 	}
 	static BindableSet& Get() 

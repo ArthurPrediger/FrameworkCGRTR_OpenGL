@@ -4,7 +4,7 @@
 
 FragmentShader::FragmentShader(const std::string& fs_path)
 	:
-	Bindable("FragmentShader", "FS_" + fs_path, BindType::OnInitialization),
+	Bindable("FragmentShader", BindType::OnInitialization),
 	fs_path(fs_path),
 	fs(NULL)
 {}
@@ -27,11 +27,15 @@ void FragmentShader::Bind()
 
 std::shared_ptr<FragmentShader> FragmentShader::Resolve(const std::string& fs_path)
 {
-	auto fs = std::shared_ptr<FragmentShader>(new FragmentShader(fs_path));
-	if (BindableSet::Resolve(fs))
+	auto pair = BindableSet::Resolve<FragmentShader>(fs_path);
+	if (!pair.first)
 	{
-		fs->Bind();
+		pair.second->Bind();
 	}
-	return fs;
-	return nullptr;
+	return pair.second;
 }
+
+std::string FragmentShader::GetUniqueID(const std::string& fs_path)
+{
+	return "FS_" + fs_path;
+};
