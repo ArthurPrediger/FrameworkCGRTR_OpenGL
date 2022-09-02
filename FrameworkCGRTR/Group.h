@@ -2,15 +2,16 @@
 
 #include "Drawable.h"
 #include <string>
+#include <array>
 
 class Group : public Drawable
 {
 public:
 	struct Face
 	{
-		size_t posIndex[3];
-		size_t normalIndex[3];
-		size_t textureIndex[3];
+		std::array<size_t, 3> posIndex;
+		std::array<size_t, 3> textureIndex;
+		std::array<size_t, 3> normalIndex;
 	};
 	Group(const std::string& name, const std::vector<Face>& faces);
 	const std::string& GetName() const

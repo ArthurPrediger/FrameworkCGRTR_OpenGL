@@ -10,30 +10,30 @@
 #include "Cube.h"
 #include <iostream>
 
-class TestCube
+class TestModel
 {
 public:
-	TestCube()
+	TestModel(Mesh* mesh)
 		:
-		mesh( Cube::GetMesh() ),
+		mesh(mesh),
 		transform(std::make_shared<glm::mat4>(glm::identity<glm::mat4>()))
 	{
-		auto group = mesh.QueryGroup(0);
-		for (size_t i = 0; nullptr != group; i++, group = mesh.QueryGroup(i))
+		std::shared_ptr<VertexShader> vs = VertexShader::Resolve("SimpleVertexShader.txt");
+
+		std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("SimpleFragmentShader.txt");
+
+		sp = ShaderProgram::Resolve(vs, fs);
+
+		auto group = mesh->QueryGroup(0);
+		for (size_t i = 0; group != nullptr; i++, group = mesh->QueryGroup(i))
 		{
-			std::shared_ptr<VertexShader> vs = VertexShader::Resolve("SimpleVertexShader.txt");
-
-			std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("SimpleFragmentShader.txt");
-
-			sp = ShaderProgram::Resolve(vs, fs);
-
 			group->AddBindable(vs);
 
 			group->AddBindable(fs);
 
 			group->AddBindable(sp);
 
-			std::shared_ptr<VBO> vbo = VBO::Resolve(std::move(mesh.GetVerticesFromGroup(i)), "CubeFace" + std::to_string(i));
+			std::shared_ptr<VBO> vbo = VBO::Resolve(std::move(mesh->GetVerticesFromGroup(i)), group->GetName() + std::to_string(i));
 			group->AddBindable(vbo);
 
 			std::shared_ptr<VAO> vao = VAO::Resolve({ vbo });
@@ -45,10 +45,10 @@ public:
 	}
 	void Draw(float dt)
 	{
-		mesh.Draw();
+		mesh->Draw();
 	}
 public:
-	Mesh mesh;
+	Mesh* mesh;
 	std::shared_ptr<ShaderProgram> sp;
 	std::shared_ptr<glm::mat4> transform = nullptr;
 	float angle = 0;

@@ -1,5 +1,6 @@
 #include "App.h"
-#include "TestCube.h"
+#include "OBJ_Loader.h"
+#include "TestModel.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -22,11 +23,12 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	TestCube cube;
-	TestCube cube1;
+	Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
+
+	TestModel model{&trout};
 
 	glCullFace(GL_BACK);
-	//glFrontFace(GL_CW);
+	glFrontFace(GL_CW);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
@@ -39,28 +41,18 @@ void App::Run()
 
 		const float dt = timer.Tick();
 
-		cube.angle += glm::pi<float>() * dt / 5;
+		model.angle += glm::pi<float>() * dt / 5;
 
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(50.0f), (float)window->GetDimensions().width / (float)window->GetDimensions().height, 0.1f, 100.0f);
 
 		glm::mat4 view = glm::identity<glm::mat4>();
-		view = glm::translate(view, { 1.0f, 0.0f, -3.0f });
-		view = glm::rotate(view, cube.angle, { 1.0f, 1.0f, 0.0f });
+		view = glm::translate(view, { -1.0f, 0.0f, -10.0f });
+		view = glm::rotate(view, model.angle, { 0.0f, 1.0f, 0.0f });
 
-		*cube.transform = projection * view;
+		*model.transform = projection * view;
 
-		cube.Draw(dt);
-
-		cube1.angle += glm::pi<float>() * dt / 5;
-
-		view = glm::identity<glm::mat4>();
-		view = glm::translate(view, { -1.0f, 0.0f, -3.0f });
-		view = glm::rotate(view, cube1.angle, { 1.0f, 1.0f, 0.0f });
-
-		*cube1.transform = projection * view;
-
-		cube1.Draw(dt);
+		model.Draw(dt);
 
 		glfwSwapBuffers(window->GetWindow());
 	}

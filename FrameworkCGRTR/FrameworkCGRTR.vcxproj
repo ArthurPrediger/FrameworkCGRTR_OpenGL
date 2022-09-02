@@ -177,9 +177,10 @@
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="OBJ_Loader.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="TestCube.h" />
+    <ClInclude Include="TestModel.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UniformLocation.h" />
     <ClInclude Include="VAO.h" />

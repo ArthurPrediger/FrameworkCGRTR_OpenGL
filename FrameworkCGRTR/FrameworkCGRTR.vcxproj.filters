@@ -89,7 +89,7 @@
     <ClInclude Include="FragmentShader.h">
       <Filter>Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="TestCube.h">
+    <ClInclude Include="TestModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram.h">
@@ -114,6 +114,9 @@
       <Filter>Bindables</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJ_Loader.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
