@@ -24,8 +24,10 @@ void App::Run()
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
 	Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
+	Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
+	Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/dragon.obj");
 
-	TestModel model{&trout};
+	TestModel model{&dragon};
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
@@ -47,8 +49,9 @@ void App::Run()
 		projection = glm::perspective(glm::radians(50.0f), (float)window->GetDimensions().width / (float)window->GetDimensions().height, 0.1f, 100.0f);
 
 		glm::mat4 view = glm::identity<glm::mat4>();
-		view = glm::translate(view, { -1.0f, 0.0f, -10.0f });
+		view = glm::translate(view, { 0.0f, 0.0f, -3.0f });
 		view = glm::rotate(view, model.angle, { 0.0f, 1.0f, 0.0f });
+		view = glm::rotate(view, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
 
 		*model.transform = projection * view;
 

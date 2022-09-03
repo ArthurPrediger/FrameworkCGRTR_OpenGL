@@ -41,11 +41,13 @@ public:
 			Mesh::Vertices vertices;
 
 			std::vector<Group> groups;
-			std::string curGroupName;
+			std::string curGroupName = mesh_file_path;
 			std::vector<Group::Face> curGroupFaces;
 
 			std::vector<std::string> subStrs;
 			std::string line;
+
+			bool hasTextures = false, hasNormals = false;
 
 			auto loadVertex = [&line, &subStrs](unsigned int nDimensions) {
 				float x = 0, y = 0, z = 0;
@@ -79,10 +81,12 @@ public:
 				else if (subStrs[0] == "vt")
 				{
 					vertices.vertsTexts.push_back(loadVertex(2));
+					hasTextures = true;
 				}
 				else if (subStrs[0] == "vn")
 				{
 					vertices.vertsNormals.push_back(loadVertex(3));
+					hasNormals = true;
 				}
 				else if (subStrs[0] == "g")
 				{
@@ -91,7 +95,16 @@ public:
 						groups.emplace_back(Group{ curGroupName, curGroupFaces });
 					}
 
-					curGroupName = subStrs[2];
+					if (subStrs.size() > 1)
+					{
+						curGroupName.clear();
+						size_t i;
+						for (i = 1; i < subStrs.size(); i++)
+						{
+							curGroupName.append(subStrs[i] + "_");
+						}
+						curGroupName.erase(curGroupName.size() - 1, 1);
+					}
 					curGroupFaces.clear();
 				}
 				else if (subStrs[0] == "f")
@@ -105,9 +118,12 @@ public:
 					{
 						auto faceVertexIndices = Split(subStrs[i + 1], '/');
 
+						curVertIndices = { 0, 0, 0 };
 						curVertIndices[0] = static_cast<size_t>(std::stoi(faceVertexIndices[0])) - 1;
-						curVertIndices[1] = static_cast<size_t>(std::stoi(faceVertexIndices[1])) - 1;
-						curVertIndices[2] = static_cast<size_t>(std::stoi(faceVertexIndices[2])) - 1;
+						if(hasTextures)
+							curVertIndices[1] = static_cast<size_t>(std::stoi(faceVertexIndices[1])) - 1;
+						if(hasNormals)
+							curVertIndices[2] = static_cast<size_t>(std::stoi(faceVertexIndices[2])) - 1;
 
 						vertIndices.push_back(curVertIndices);
 					}
@@ -143,6 +159,11 @@ public:
 			{
 				groups.emplace_back(Group{ curGroupName, curGroupFaces });
 			}
+
+			if (!hasTextures)
+				vertices.vertsTexts = { { 0.0f , 0.0f } };
+			if (!hasNormals)
+				vertices.vertsNormals = { { 0.0f , 0.0f, 0.0f } };
 
 			Mesh mesh{ vertices };
 
