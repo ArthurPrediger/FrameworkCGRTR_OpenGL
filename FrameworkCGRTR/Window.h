@@ -25,6 +25,7 @@ public:
 		return { width, height };
 	}
 	static void Resize(GLFWwindow* window, int width, int height);
+	static void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 private:
 	int width;
 	int height;

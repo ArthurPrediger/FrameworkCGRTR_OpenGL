@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Timer.h"
+#include "Camera.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <memory>
@@ -13,6 +14,7 @@ public:
 
 	void Run();
 private:
-	std::unique_ptr<class Window> window;
-	Timer timer{};
+	std::unique_ptr<Window> window;
+	Timer timer;
+	Camera camera;
 };

@@ -63,6 +63,9 @@
     <ClCompile Include="Group.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -89,7 +92,7 @@
     <ClInclude Include="FragmentShader.h">
       <Filter>Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="TestModel.h">
+    <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="OBJ_Loader.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

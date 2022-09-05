@@ -1,6 +1,6 @@
 #include "App.h"
 #include "OBJ_Loader.h"
-#include "TestModel.h"
+#include "GameObject.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,8 +9,14 @@
 App::App()
 	:
 	window(std::make_unique<Window>(640, 480, "FrameworkCGRTR's Window")),
-	timer(Timer())
-{}
+	timer(Timer()),
+	camera(Camera())
+{
+	double xPos = 0.0f, yPos = 0.0f;
+	glfwGetCursorPos(window->GetWindow(), &xPos, &yPos);
+	camera.prevMousePos.first = xPos;
+	camera.prevMousePos.second = yPos;
+}
 
 void App::Run()
 {
@@ -23,11 +29,11 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
-	Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
+	//Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
+	//Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
 	Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/dragon.obj");
 
-	TestModel model{&dragon};
+	GameObject gameObject{&dragon};
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
@@ -43,19 +49,15 @@ void App::Run()
 
 		const float dt = timer.Tick();
 
-		model.angle += glm::pi<float>() * dt / 5;
+		camera.Update(window.get(), dt);
 
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(50.0f), (float)window->GetDimensions().width / (float)window->GetDimensions().height, 0.1f, 100.0f);
+		glm::mat4 world = glm::identity<glm::mat4>();
+		world = glm::translate(world, { 0.0f, 0.0f, -3.0f });
+		world = glm::rotate(world, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
 
-		glm::mat4 view = glm::identity<glm::mat4>();
-		view = glm::translate(view, { 0.0f, 0.0f, -3.0f });
-		view = glm::rotate(view, model.angle, { 0.0f, 1.0f, 0.0f });
-		view = glm::rotate(view, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
+		gameObject.SetTransform(camera.GetViewProjectionMatrix() * world);
 
-		*model.transform = projection * view;
-
-		model.Draw(dt);
+		gameObject.Draw(dt);
 
 		glfwSwapBuffers(window->GetWindow());
 	}

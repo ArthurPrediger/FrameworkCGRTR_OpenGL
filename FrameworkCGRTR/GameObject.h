@@ -10,10 +10,10 @@
 #include "Cube.h"
 #include <iostream>
 
-class TestModel
+class GameObject
 {
 public:
-	TestModel(Mesh* mesh)
+	GameObject(Mesh* mesh)
 		:
 		mesh(mesh),
 		transform(std::make_shared<glm::mat4>(glm::identity<glm::mat4>()))
@@ -43,13 +43,16 @@ public:
 		std::shared_ptr<UniformLocation<glm::mat4>> unifLoc = UniformLocation<glm::mat4>::Resolve(sp, "transform", transform);
 		sp->AddUniformLocationBindable(unifLoc);
 	}
+	void SetTransform(const glm::mat4& transform)
+	{
+		*(this->transform) = transform;
+	}
 	void Draw(float dt)
 	{
 		mesh->Draw();
 	}
-public:
+private:
 	Mesh* mesh;
 	std::shared_ptr<ShaderProgram> sp;
 	std::shared_ptr<glm::mat4> transform = nullptr;
-	float angle = 0;
 };

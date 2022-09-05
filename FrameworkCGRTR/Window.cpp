@@ -24,6 +24,8 @@ Window::Window(int width, int height, const std::string& name)
 	glfwMakeContextCurrent(window);
 
 	glfwSetWindowSizeCallback(window, Window::Resize);
+	glfwSetKeyCallback(window, Window::Key_Callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Window::~Window()
@@ -37,4 +39,12 @@ void Window::Resize(GLFWwindow* window, int width, int height)
 	auto pWindow = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 	pWindow->width = width;
 	pWindow->height = height;
+}
+
+void Window::Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
 }
