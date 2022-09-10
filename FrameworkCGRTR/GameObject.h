@@ -32,12 +32,6 @@ public:
 			group->AddBindable(fs);
 
 			group->AddBindable(sp);
-
-			std::shared_ptr<VBO> vbo = VBO::Resolve(std::move(mesh->GetVerticesFromGroup(i)), group->GetName() + std::to_string(i));
-			group->AddBindable(vbo);
-
-			std::shared_ptr<VAO> vao = VAO::Resolve({ vbo });
-			group->AddBindable(vao);
 		}
 
 		std::shared_ptr<UniformLocation<glm::mat4>> unifLoc = UniformLocation<glm::mat4>::Resolve(sp, "transform", transform);

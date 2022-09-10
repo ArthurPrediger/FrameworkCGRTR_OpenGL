@@ -36,6 +36,8 @@ public:
 	std::vector<Vertex> GetVerticesFromGroup(const std::string& groupName) const;
 	void Draw();
 private:
+	void AddBindablesToGroup(size_t groupIndex);
+private:
 	std::vector<glm::vec3> vertsPos;
 	std::vector<glm::vec3> vertsNormals;
 	std::vector<glm::vec2> vertsTexts;

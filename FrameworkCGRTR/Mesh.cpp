@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#include "VAO.h"
+#include "VBO.h"
 #include <assert.h>
 
 Mesh::Mesh(const Vertices& vertices)
@@ -11,11 +13,15 @@ Mesh::Mesh(const Vertices& vertices)
 void Mesh::AddGroup(const std::string& groupName, const std::vector<Group::Face>& faces)
 {
 	groups.emplace_back(Group{ groupName, faces });
+
+	AddBindablesToGroup(groups.size() - 1);
 }
 
 void Mesh::AddGroup(const Group& group)
 {
 	groups.push_back(group);
+
+	AddBindablesToGroup(groups.size() - 1);
 }
 
 Group* Mesh::QueryGroup(size_t groupIndex)
@@ -79,4 +85,15 @@ void Mesh::Draw()
 	{
 		group.Draw();
 	}
+}
+
+void Mesh::AddBindablesToGroup(size_t groupIndex)
+{
+	Group& group = groups[groupIndex];
+
+	std::shared_ptr<VBO> vbo = VBO::Resolve(std::move(GetVerticesFromGroup(groupIndex)), group.GetName());
+	group.AddBindable(vbo);
+
+	std::shared_ptr<VAO> vao = VAO::Resolve({ vbo });
+	group.AddBindable(vao);
 }
