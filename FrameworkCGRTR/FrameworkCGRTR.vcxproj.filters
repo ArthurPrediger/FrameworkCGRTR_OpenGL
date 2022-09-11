@@ -25,6 +25,9 @@
     <Filter Include="Unused">
       <UniqueIdentifier>{e0b220fa-75bd-449e-81b0-fd8628051e0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="stb_image">
+      <UniqueIdentifier>{f49afdec-d9f1-4f27-9606-e53decd568c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -65,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Bindables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,12 +134,24 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SimpleFragmentShader.txt">
       <Filter>Shaders</Filter>
     </Text>
     <Text Include="SimpleVertexShader.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="TextureFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="TextureVS.txt">
       <Filter>Shaders</Filter>
     </Text>
   </ItemGroup>

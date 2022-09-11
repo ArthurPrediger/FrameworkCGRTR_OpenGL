@@ -2,15 +2,15 @@
 
 layout(location=0) in vec3 vPos;
 layout(location=1) in vec3 vNormal;
-layout(location=2) in vec2 vTextCoords;
+layout(location=2) in vec2 vTextureCoordinates;
 
 uniform mat4 transform;
 
-out vec3 color;
+out vec2 textureCoordinates;
 
 void main () 
 {
-	color = vec3(0.0f, 1.0f, 0.0f);
+	textureCoordinates = vTextureCoordinates;
 
 	gl_Position = transform * vec4(vPos, 1.0);
 }

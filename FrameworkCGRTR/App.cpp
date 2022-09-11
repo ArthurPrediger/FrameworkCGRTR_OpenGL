@@ -29,11 +29,11 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	//Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
+	Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
 	//Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
-	Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/dragon.obj");
+	//Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/dragon.obj");
 
-	GameObject gameObject{&dragon};
+	GameObject gameObject{&trout};
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
@@ -52,8 +52,8 @@ void App::Run()
 		camera.Update(window.get(), dt);
 
 		glm::mat4 world = glm::identity<glm::mat4>();
-		world = glm::translate(world, { 0.0f, 0.0f, -3.0f });
-		world = glm::rotate(world, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
+		world = glm::translate(world, { 0.0f, 0.0f, -5.0f });
+		//world = glm::rotate(world, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
 
 		gameObject.SetTransform(camera.GetViewProjectionMatrix() * world);
 
