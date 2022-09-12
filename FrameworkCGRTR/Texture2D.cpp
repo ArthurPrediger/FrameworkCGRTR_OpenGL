@@ -47,7 +47,7 @@ void Texture2D::LoadTexture()
 	}
 	if ( (x % 2 != 0) || (y % 2 != 0))
 	{
-		throw std::runtime_error("Loaded texture with texture path: " + texture_path + "; have at least one dimension which isn't a power of two.");
+		throw std::runtime_error("Loaded texture, with texture path: " + texture_path + ", has at least one dimension which isn't a power of two.");
 	}
 	else
 	{

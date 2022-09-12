@@ -13,7 +13,7 @@ Camera::Camera()
 	pitch(0.0f),
 	yaw(-glm::half_pi<float>()),
 	moveSpeed(10.0f),
-	rotationSpeed(glm::pi<float>() / 16.0f),
+	rotationSpeed(glm::pi<float>() / 32.0f),
 	fov(50.0f),
 	aspectRatio(16.0f / 9.0f),
 	view(glm::identity<glm::mat4>()),
