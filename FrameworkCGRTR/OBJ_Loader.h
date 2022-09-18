@@ -1,33 +1,13 @@
 #pragma once
 
 #include "Mesh.h"
+#include "MTL_Loader.h"
 #include <vector>
 #include <array>
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
-
-std::vector<std::string> Split(const std::string& str, char delimeter)
-{
-	std::vector<std::string> subStrings{};
-	std::string subStr{};
-	for (size_t i = 0; i < str.size(); i++)
-	{
-		if (str[i] != delimeter)
-		{
-			subStr.append(1, str[i]);
-		}
-		else if (str[i] == delimeter && subStr.size() > 0)
-		{
-			subStrings.push_back(subStr);
-			subStr.clear();
-		}
-	}
-	subStrings.push_back(subStr);
-	subStr.clear();
-
-	return subStrings;
-}
+#include <algorithm>
 
 class OBJ_Loader
 {
@@ -43,11 +23,12 @@ public:
 			std::vector<Group> groups;
 			std::string curGroupName = mesh_file_path;
 			std::vector<Group::Face> curGroupFaces;
+			std::vector<std::string> mtllib_paths;
+			std::vector<std::string> groupsMaterials;
+			std::string curMaterialName = "";
 
 			std::vector<std::string> subStrs;
 			std::string line;
-
-			bool hasTextures = false, hasNormals = false;
 
 			auto loadVertex = [&line, &subStrs](unsigned int nDimensions) {
 				float x = 0, y = 0, z = 0;
@@ -81,18 +62,18 @@ public:
 				else if (subStrs[0] == "vt")
 				{
 					vertices.vertsTexts.push_back(loadVertex(2));
-					hasTextures = true;
 				}
 				else if (subStrs[0] == "vn")
 				{
-					vertices.vertsNormals.push_back(loadVertex(3));
-					hasNormals = true;
+					vertices.vertsNormals.push_back(loadVertex(3));;
 				}
 				else if (subStrs[0] == "g")
 				{
 					if (curGroupFaces.size() > 0)
 					{
 						groups.emplace_back(Group{ curGroupName, curGroupFaces });
+						groupsMaterials.push_back(curMaterialName);
+						curMaterialName = "";
 					}
 
 					if (subStrs.size() > 1)
@@ -120,9 +101,9 @@ public:
 
 						curVertIndices = { 0, 0, 0 };
 						curVertIndices[0] = static_cast<size_t>(std::stoi(faceVertexIndices[0])) - 1;
-						if(hasTextures)
+						if(vertices.vertsTexts.size() > 0)
 							curVertIndices[1] = static_cast<size_t>(std::stoi(faceVertexIndices[1])) - 1;
-						if(hasNormals)
+						if(vertices.vertsNormals.size() > 0)
 							curVertIndices[2] = static_cast<size_t>(std::stoi(faceVertexIndices[2])) - 1;
 
 						vertIndices.push_back(curVertIndices);
@@ -151,6 +132,17 @@ public:
 						break;
 					}
 				}
+				else if (subStrs[0] == "mtllib")
+				{
+					std::string path_to_mtllib = mesh_file_path;
+					auto offset = path_to_mtllib.find_last_of("/");
+					path_to_mtllib.erase(offset + 1, path_to_mtllib.size() - offset - 1);
+					mtllib_paths.push_back(path_to_mtllib + subStrs[1]);
+				}
+				else if (subStrs[0] == "usemtl")
+				{
+					curMaterialName = subStrs[1];
+				}
 			}
 
 			file.close();
@@ -158,14 +150,29 @@ public:
 			if (curGroupFaces.size() > 0)
 			{
 				groups.emplace_back(Group{ curGroupName, curGroupFaces });
+				groupsMaterials.push_back(curMaterialName);
 			}
 
-			if (!hasTextures)
+			if (vertices.vertsTexts.size() == 0)
 				vertices.vertsTexts = { { 0.0f , 0.0f } };
-			if (!hasNormals)
+			if (vertices.vertsNormals.size() == 0)
 				vertices.vertsNormals = { { 0.0f , 0.0f, 0.0f } };
 
 			Mesh mesh{ vertices };
+
+			if (mtllib_paths.size() > 0)
+			{
+				auto materials = MTL_Loader::LoadMtllib(mtllib_paths[0]);
+				for (size_t i = 0; i < groups.size(); i++)
+				{
+					if (groupsMaterials[i] != "")
+					{
+						std::shared_ptr<Material> material = *std::find_if(materials.begin(), materials.end(),
+							[i, &groupsMaterials](std::shared_ptr<Material> material) { return material->GetName() == groupsMaterials[i]; });
+						groups[i].AddMaterial(material);
+					}
+				}
+			}
 
 			for (auto& group : groups)
 			{

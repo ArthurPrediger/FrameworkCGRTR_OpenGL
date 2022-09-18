@@ -5,10 +5,12 @@
 #include "ShaderProgram.h"
 #include "BindableSet.h"
 #include "Mesh.h"
+#include "Material.h"
 
 Drawable::Drawable(size_t numVertices)
 	:
-	numVertices(numVertices)
+	numVertices(numVertices),
+	material(nullptr)
 {}
 
 void Drawable::Draw()
@@ -16,6 +18,10 @@ void Drawable::Draw()
 	for (auto& bindable : onDrawBindables)
 	{
 		bindable->Bind();
+	}
+	if (material)
+	{
+		material->BindTextureMaps();
 	}
 	glDrawArrays(GL_TRIANGLES, 0, GLsizei(numVertices));
 	glBindVertexArray(0);
@@ -32,4 +38,9 @@ void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 	{
 		onInitializationBindables.push_back(bindable);
 	}
+}
+
+void Drawable::AddMaterial(std::shared_ptr<Material> material)
+{
+	this->material = material;
 }
