@@ -15,6 +15,5 @@ public:
 	void Run();
 private:
 	std::unique_ptr<Window> window;
-	Timer timer;
 	Camera camera;
 };

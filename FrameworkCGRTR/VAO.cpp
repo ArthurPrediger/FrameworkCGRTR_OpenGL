@@ -33,7 +33,7 @@ std::shared_ptr<VAO> VAO::Resolve(std::vector<std::shared_ptr<VBO>> VBOs)
 	return pair.second;
 }
 
-std::string VAO::GetUniqueID(std::vector<std::shared_ptr<class VBO>> VBOs)
+std::string VAO::GetUniqueID(std::vector<std::shared_ptr<VBO>> VBOs)
 {
 	std::string uID = "VAO_";
 

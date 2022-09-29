@@ -66,13 +66,22 @@ void Camera::Update(Window* pWindow, float dt)
 	}
 };
 
-glm::mat4 Camera::GetViewProjectionMatrix()
+glm::mat4 Camera::GetViewMatrix()
 {
 	view = glm::identity<glm::mat4>();
 	view = glm::lookAt(position, position + front, up);
+	return view;
+}
 
+glm::mat4 Camera::GetProjectionMatrix()
+{
 	projection = glm::identity<glm::mat4>();
 	projection = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 100.0f);
 
-	return projection * view;
+	return projection;
+};
+
+glm::mat4 Camera::GetViewProjectionMatrix()
+{
+	return GetProjectionMatrix() * GetViewMatrix();
 };

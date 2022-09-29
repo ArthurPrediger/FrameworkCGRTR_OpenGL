@@ -5,11 +5,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include "Sphere.h"
 
 App::App()
 	:
 	window(std::make_unique<Window>(640, 480, "FrameworkCGRTR's Window")),
-	timer(Timer()),
 	camera(Camera())
 {
 	double xPos = 0.0f, yPos = 0.0f;
@@ -29,16 +29,30 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
+	Mesh car = OBJ_Loader::LoadMesh("../3dModels/car/Car.obj");
+	Mesh wheel = OBJ_Loader::LoadMesh("../3dModels/car/Wheel.obj");
+	Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/alduin.obj");
+	Mesh katarina = OBJ_Loader::LoadMesh("../3dModels/katarina/katarina.obj");
+	Mesh sphere = Sphere::GetMesh(1.0f);
+	//Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
 	//Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
-	//Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/dragon.obj");
+	//Mesh dragon_statue = OBJ_Loader::LoadMesh("../3dModels/dragon_statue/dragon.obj");
 
-	GameObject gameObject{&trout};
+	std::vector<GameObject> gameObjects = {
+		//{&trout, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt"},
+		{&car, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { -glm::half_pi<float>(), 0.0f, 0.0f } },
+		{&wheel, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { -glm::half_pi<float>(), 0.0f, 0.0f } },
+		{&dragon, { -10.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { 0.0f, -glm::half_pi<float>(), 0.0f }, 0.01f },
+		{&katarina, { 3.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { 0.0f, 0.0f, 0.0f }, 0.25f},
+		{&sphere, { 0.0f, -3.0f, -10.0f }, "SimpleVertexShader.txt", "SimpleFragmentShader.txt" } 
+	};
 
 	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+
+	Timer timer{};
 
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{
@@ -51,13 +65,13 @@ void App::Run()
 
 		camera.Update(window.get(), dt);
 
-		glm::mat4 world = glm::identity<glm::mat4>();
-		world = glm::translate(world, { 0.0f, 0.0f, -5.0f });
-		//world = glm::rotate(world, glm::pi<float>() / 2.0f , { -1.0f, 0.0f, 0.0f });
+		glm::mat4 view = camera.GetViewMatrix();
+		glm::mat4 projection = camera.GetProjectionMatrix();
 
-		gameObject.SetTransform(camera.GetViewProjectionMatrix() * world);
-
-		gameObject.Draw(dt);
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject.Draw(dt, view, projection);
+		}
 
 		glfwSwapBuffers(window->GetWindow());
 	}

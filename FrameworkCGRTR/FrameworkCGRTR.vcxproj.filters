@@ -158,6 +158,9 @@
     <ClInclude Include="SplitString.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SimpleFragmentShader.txt">

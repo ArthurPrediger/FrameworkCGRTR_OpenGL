@@ -19,7 +19,7 @@ public:
 		return vbo;
 	}
 	const std::string& GetName() const override
-	{
+	{ 
 		return name;
 	}
 private:

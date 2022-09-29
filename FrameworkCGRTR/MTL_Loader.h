@@ -37,12 +37,13 @@ public:
 					}
 					material = std::make_shared<Material>(mtllib_path, subStrs[1]);
 				}
-				if (subStrs[0] == "map_Kd")
+				if (subStrs[0] == "map_Kd" && subStrs[1] != "")
 				{
 					std::string texture_path = mtllib_path;
 					auto offset = texture_path.find_last_of("/");
 					texture_path.erase(offset + 1, texture_path.size() - offset - 1);
-					texture_path.append(subStrs[1]);
+					for(size_t i = 1; i < subStrs.size(); i++) 
+						texture_path.append(subStrs[1]);
 					auto texture = Texture2D::Resolve(texture_path);
 					material->textureMaps.push_back(std::move(texture));
 				}

@@ -10,6 +10,8 @@ class Camera
 public:
 	Camera();
 	void Update(class Window* window, float dt);
+	glm::mat4 GetViewMatrix();
+	glm::mat4 GetProjectionMatrix();
 	glm::mat4 GetViewProjectionMatrix();
 private:
 	glm::vec3 position;
