@@ -7,7 +7,7 @@
 Camera::Camera()
 	:
 	position({ 0.0f, 0.0f, 0.0f }),
-	front({ 0.0f, 0.0f, -1.0f }),
+	forward({ 0.0f, 0.0f, -1.0f }),
 	up({ 0.0f, 1.0f, 0.0f }),
 	right(glm::cross(glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f })),
 	pitch(0.0f),
@@ -39,22 +39,22 @@ void Camera::Update(Window* pWindow, float dt)
 		yaw = fmod(yaw, glm::two_pi<float>());
 		pitch = std::clamp(pitch, -glm::half_pi<float>() + 0.01f, glm::half_pi<float>() - 0.01f);
 		
-		front.x = cosf(pitch) * cosf(yaw);
-		front.y = sinf(pitch);
-		front.z = cosf(pitch) * sinf(yaw);
-		front = glm::normalize(front);
+		forward.x = cosf(pitch) * cosf(yaw);
+		forward.y = sinf(pitch);
+		forward.z = cosf(pitch) * sinf(yaw);
+		forward = glm::normalize(forward);
 		
-		right = glm::normalize(glm::cross(front, { 0.0f, 1.0f, 0.0f }));
-		up = glm::normalize(glm::cross(right, front));
+		right = glm::normalize(glm::cross(forward, { 0.0f, 1.0f, 0.0f }));
+		up = glm::normalize(glm::cross(right, forward));
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		position += front * (moveSpeed * dt);
+		position += forward * (moveSpeed * dt);
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		position -= front * (moveSpeed * dt);
+		position -= forward * (moveSpeed * dt);
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
@@ -69,7 +69,7 @@ void Camera::Update(Window* pWindow, float dt)
 glm::mat4 Camera::GetViewMatrix()
 {
 	view = glm::identity<glm::mat4>();
-	view = glm::lookAt(position, position + front, up);
+	view = glm::lookAt(position, position + forward, up);
 	return view;
 }
 

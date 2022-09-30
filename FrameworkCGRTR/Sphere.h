@@ -43,7 +43,7 @@ public:
 
 		const auto calcIdx = [longDiv](int iLat, int iLong)
 		{
-			return size_t(iLat * longDiv + iLong);
+			return size_t(iLat) * size_t(longDiv) + size_t(iLong);
 		};
 		std::vector<size_t> indices;
 		for (int iLat = 0; iLat < latDiv - 2; iLat++)
@@ -98,7 +98,7 @@ public:
 			sphere_faces.push_back(face);
 		}
 
-		sphere.AddGroup({ "sphere", sphere_faces });
+		sphere.AddGroup({ "sphere_" + std::to_string(radius), sphere_faces});
 
 		return sphere;
 	}

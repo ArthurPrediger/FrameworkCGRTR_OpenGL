@@ -1,11 +1,13 @@
 #include "App.h"
 #include "OBJ_Loader.h"
 #include "GameObject.h"
+#include "Sphere.h"
+#include "ShootingSystem.h"
+
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "Sphere.h"
 
 App::App()
 	:
@@ -35,8 +37,6 @@ void App::Run()
 	Mesh katarina = OBJ_Loader::LoadMesh("../3dModels/katarina/katarina.obj");
 	Mesh sphere = Sphere::GetMesh(1.0f);
 	//Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
-	//Mesh pyramid = OBJ_Loader::LoadMesh("../3dModels/pyramid/pyramid.obj");
-	//Mesh dragon_statue = OBJ_Loader::LoadMesh("../3dModels/dragon_statue/dragon.obj");
 
 	std::vector<GameObject> gameObjects = {
 		//{&trout, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt"},
@@ -54,6 +54,8 @@ void App::Run()
 
 	Timer timer{};
 
+	ShootingSystem shooting_sys{&camera, gameObjects};
+
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{
 		glfwPollEvents();
@@ -64,6 +66,8 @@ void App::Run()
 		const float dt = timer.Tick();
 
 		camera.Update(window.get(), dt);
+
+		shooting_sys.Update(window.get(), dt);
 
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = camera.GetProjectionMatrix();

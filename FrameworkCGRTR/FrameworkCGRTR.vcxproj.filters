@@ -84,6 +84,9 @@
     <ClCompile Include="UniformLocation.cpp">
       <Filter>Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="ShootingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
