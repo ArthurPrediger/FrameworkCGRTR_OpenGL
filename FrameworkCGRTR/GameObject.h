@@ -20,6 +20,19 @@ public:
 	{
 		world_position = position;
 	}
+
+private:
+	void SetCollisonParameters();
+
+public:
+	glm::vec3 collison_center = glm::vec3(0.0f);
+	float collison_radius = 0.0f;
+	bool is_destructible = false;
+
+private:
+	glm::vec3 collison_center_no_transform = glm::vec3(0.0f);
+	float collison_radius_no_transform = 0.0f;
+
 private:
 	Mesh* mesh;
 	std::shared_ptr<class ShaderProgram> sp;

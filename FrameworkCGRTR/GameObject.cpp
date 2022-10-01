@@ -37,6 +37,8 @@ GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const std::s
 
 	std::shared_ptr<UniformLocation<glm::mat4>> unifLoc_transform = UniformLocation<glm::mat4>::Resolve(sp, "transform", transform);
 	sp->AddUniformLocationBindable(unifLoc_transform);
+
+	SetCollisonParameters();
 }
 
 void GameObject::Draw(float dt, const glm::mat4& view, const glm::mat4& projection)
@@ -47,6 +49,30 @@ void GameObject::Draw(float dt, const glm::mat4& view, const glm::mat4& projecti
 	world = glm::rotate(world, world_rotation.z, { 0.0f, 0.0f, 1.0f });
 	world = glm::scale(world, { scale, scale, scale });
 
+	collison_center = glm::vec3(world * glm::vec4(collison_center_no_transform, 1.0f));
+	collison_radius = collison_radius_no_transform * scale;
+
 	*transform = projection * view * world;
 	mesh->Draw();
+}
+
+void GameObject::SetCollisonParameters()
+{
+	const auto& vertices = mesh->GetVertices().vertsPos;
+
+	glm::vec3 high_extrem = { 0.0f, 0.0f, 0.0f }, low_extrem = { 0.0f, 0.0f, 0.0f };
+
+	for (const auto& vertex : vertices)
+	{
+		high_extrem.x = std::max(high_extrem.x, vertex.x);
+		high_extrem.y = std::max(high_extrem.y, vertex.y);
+		high_extrem.z = std::max(high_extrem.z, vertex.z);
+		low_extrem.x = std::min(low_extrem.x, vertex.x);
+		low_extrem.y = std::min(low_extrem.y, vertex.y);
+		low_extrem.z = std::min(low_extrem.z, vertex.z);
+	}
+
+	glm::vec3 diff = high_extrem - low_extrem;
+	collison_radius_no_transform = std::max(std::max(diff.x, diff.y), diff.z) / 2.0f;
+	collison_center_no_transform = (high_extrem + low_extrem) / 2.0f;
 }

@@ -11,7 +11,7 @@
 
 App::App()
 	:
-	window(std::make_unique<Window>(640, 480, "FrameworkCGRTR's Window")),
+	window(std::make_unique<Window>(960, 540, "FrameworkCGRTR's Window")),
 	camera(Camera())
 {
 	double xPos = 0.0f, yPos = 0.0f;
@@ -47,6 +47,9 @@ void App::Run()
 		{&sphere, { 0.0f, -3.0f, -10.0f }, "SimpleVertexShader.txt", "SimpleFragmentShader.txt" } 
 	};
 
+	gameObjects[3].is_destructible = true;
+	gameObjects[4].is_destructible = true;
+
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
@@ -54,7 +57,7 @@ void App::Run()
 
 	Timer timer{};
 
-	ShootingSystem shooting_sys{&camera, gameObjects};
+	ShootingSystem shooting_sys{&camera, &gameObjects};
 
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{

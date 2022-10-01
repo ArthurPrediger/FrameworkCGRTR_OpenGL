@@ -4,6 +4,7 @@
 #include "Window.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtx/norm.hpp>
 #include <algorithm>
 
 Projectile::Projectile(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& velocity_direction)
@@ -18,7 +19,7 @@ void Projectile::Update(float dt)
 	time += dt;
 }
 
-ShootingSystem::ShootingSystem(Camera* camera, std::vector<GameObject> scene_objects, float projectile_radius)
+ShootingSystem::ShootingSystem(Camera* camera, std::vector<GameObject>* scene_objects, float projectile_radius)
 	:
 	camera(camera),
 	projectile_radius(projectile_radius),
@@ -29,10 +30,39 @@ ShootingSystem::ShootingSystem(Camera* camera, std::vector<GameObject> scene_obj
 
 void ShootingSystem::Update(Window* window, float dt)
 {
-	if (glfwGetMouseButton(window->GetWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	time += dt;
+	if (glfwGetMouseButton(window->GetWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS && time > fire_rate)
 	{
 		projectiles.emplace_back(Projectile{ &sphere, camera->GetPosition(), camera->GetForwardVector() });
+		time = 0.0f;
 	}
+
+	auto handleCollsion = [](Projectile& projectile, std::vector<GameObject>* objects) {
+
+		size_t index = 0;
+		for (auto& object : *objects)
+		{
+			glm::vec3 diff = projectile.collison_center - object.collison_center;
+			float radius_sum = projectile.collison_radius + object.collison_radius;
+			if (glm::dot(diff, diff) < (radius_sum * radius_sum) &&
+				glm::dot(projectile.GetVelocityDirection(), diff) < 0.0f)
+			{
+				if (object.is_destructible)
+				{
+					objects->erase(objects->begin() + index);
+					projectile.is_destroyed = true;
+				}
+				else
+				{
+					const glm::vec3 normal = glm::normalize(diff);
+					const glm::vec3 new_direction = 2 * glm::dot(normal, (-projectile.GetVelocityDirection())) * normal + projectile.GetVelocityDirection();
+					projectile.SetVelocityDirection(glm::normalize(new_direction));
+				}
+				return;
+			}
+			index++;
+		}
+	};
 
 	auto view = camera->GetViewMatrix();
 	auto projection = camera->GetProjectionMatrix();
@@ -40,7 +70,12 @@ void ShootingSystem::Update(Window* window, float dt)
 	for (size_t i = 0; i < projectiles.size(); i++)
 	{
 		projectiles[i].Update(dt);
-		if (projectiles[i].GetTime() > 10.0f) projectiles.erase(projectiles.begin() + i--);
-		else projectiles[i].Draw(dt, view, projection);
+
+		if (projectiles[i].GetTime() > 10.0f || projectiles[i].is_destroyed) projectiles.erase(projectiles.begin() + i--);
+		else
+		{
+			handleCollsion(projectiles[i], scene_objects);
+			projectiles[i].Draw(dt, view, projection);
+		}
 	}
 }
