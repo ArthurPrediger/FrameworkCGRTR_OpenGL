@@ -188,6 +188,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MTL_Loader.h" />
     <ClInclude Include="OBJ_Loader.h" />
+    <ClInclude Include="Scene_Loader.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="GameObject.h" />
@@ -206,6 +207,7 @@
   <ItemGroup>
     <Text Include="SimpleFragmentShader.txt" />
     <Text Include="SimpleVertexShader.txt" />
+    <Text Include="Scene.txt" />
     <Text Include="TextureFS.txt" />
     <Text Include="TextureVS.txt" />
   </ItemGroup>

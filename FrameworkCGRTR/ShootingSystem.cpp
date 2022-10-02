@@ -9,7 +9,7 @@
 
 Projectile::Projectile(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& velocity_direction)
 	:
-	GameObject(mesh, world_position, "SimpleVertexShader.txt", "SimpleFragmentShader.txt"),
+	GameObject(mesh, "SimpleVertexShader.txt", "SimpleFragmentShader.txt", world_position),
 	velocity_direction(velocity_direction)
 {}
 

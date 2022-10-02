@@ -1,6 +1,5 @@
 #include "App.h"
-#include "OBJ_Loader.h"
-#include "GameObject.h"
+#include "Scene_Loader.h"
 #include "Sphere.h"
 #include "ShootingSystem.h"
 
@@ -11,14 +10,8 @@
 
 App::App()
 	:
-	window(std::make_unique<Window>(960, 540, "FrameworkCGRTR's Window")),
-	camera(Camera())
-{
-	double xPos = 0.0f, yPos = 0.0f;
-	glfwGetCursorPos(window->GetWindow(), &xPos, &yPos);
-	camera.prevMousePos.first = xPos;
-	camera.prevMousePos.second = yPos;
-}
+	window(std::make_unique<Window>(960, 600, "FrameworkCGRTR's Window"))
+{}
 
 void App::Run()
 {
@@ -31,24 +24,11 @@ void App::Run()
 	std::cout << "Renderer: " << renderer << "\n";
 	std::cout << "OpenGL (versao suportada) " << version << "\n";
 
-	Mesh car = OBJ_Loader::LoadMesh("../3dModels/car/Car.obj");
-	Mesh wheel = OBJ_Loader::LoadMesh("../3dModels/car/Wheel.obj");
-	Mesh dragon = OBJ_Loader::LoadMesh("../3dModels/dragon/alduin.obj");
-	Mesh katarina = OBJ_Loader::LoadMesh("../3dModels/katarina/katarina.obj");
-	Mesh sphere = Sphere::GetMesh(1.0f);
-	//Mesh trout = OBJ_Loader::LoadMesh("../3dModels/trout/trout.obj");
-
-	std::vector<GameObject> gameObjects = {
-		//{&trout, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt"},
-		{&car, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { -glm::half_pi<float>(), 0.0f, 0.0f } },
-		{&wheel, { 0.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { -glm::half_pi<float>(), 0.0f, 0.0f } },
-		{&dragon, { -10.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { 0.0f, -glm::half_pi<float>(), 0.0f }, 0.01f },
-		{&katarina, { 3.0f, 0.0f, -10.0f }, "TextureVS.txt", "TextureFS.txt", { 0.0f, 0.0f, 0.0f }, 0.25f},
-		{&sphere, { 0.0f, -3.0f, -10.0f }, "SimpleVertexShader.txt", "SimpleFragmentShader.txt" } 
-	};
-
-	gameObjects[3].is_destructible = true;
-	gameObjects[4].is_destructible = true;
+	Camera camera{};
+	std::vector<Mesh> meshes{};
+	std::vector<GameObject> gameObjects{};
+	Scene_Loader::LoadScene("Scene.txt", &camera, &meshes, &gameObjects);
+	camera.Update(window.get(), 0.0f);
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);

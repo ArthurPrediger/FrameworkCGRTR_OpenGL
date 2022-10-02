@@ -6,7 +6,7 @@
 
 class Camera
 {
-	friend class App;
+	friend class Scene_Loader;
 public:
 	Camera();
 	void Update(class Window* window, float dt);

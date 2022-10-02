@@ -10,7 +10,7 @@
 #include "Cube.h"
 #include <iostream>
 
-GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const std::string& vs_name, const std::string& fs_name, 
+GameObject::GameObject(Mesh* mesh, const std::string& vs_name, const std::string& fs_name, const glm::vec3& world_position,
 	const glm::vec3& world_rotation, float scale)
 	:
 	mesh(mesh),
@@ -44,9 +44,9 @@ GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const std::s
 void GameObject::Draw(float dt, const glm::mat4& view, const glm::mat4& projection)
 {
 	glm::mat4 world = glm::translate(glm::identity<glm::mat4>(), world_position);
-	world = glm::rotate(world, world_rotation.x, { 1.0f, 0.0f, 0.0f });
-	world = glm::rotate(world, world_rotation.y, { 0.0f, 1.0f, 0.0f });
-	world = glm::rotate(world, world_rotation.z, { 0.0f, 0.0f, 1.0f });
+	world = glm::rotate(world, glm::radians(world_rotation.x), { 1.0f, 0.0f, 0.0f });
+	world = glm::rotate(world, glm::radians(world_rotation.y), { 0.0f, 1.0f, 0.0f });
+	world = glm::rotate(world, glm::radians(world_rotation.z), { 0.0f, 0.0f, 1.0f });
 	world = glm::scale(world, { scale, scale, scale });
 
 	collison_center = glm::vec3(world * glm::vec4(collison_center_no_transform, 1.0f));

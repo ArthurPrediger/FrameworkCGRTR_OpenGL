@@ -9,7 +9,7 @@
 class GameObject
 {
 public:
-	GameObject(class Mesh* mesh, const glm::vec3& world_position, const std::string& vs_name, const std::string& fs_name,
+	GameObject(class Mesh* mesh, const std::string& vs_name, const std::string& fs_name, const glm::vec3& world_position,
 		const glm::vec3& world_rotation = { 0.0f, 0.0f, 0.0f }, float scale = 1.0f);
 	void Draw(float dt, const glm::mat4& view, const glm::mat4& projection);
 	const glm::vec3& GetWorldPosition() const

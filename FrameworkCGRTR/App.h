@@ -15,5 +15,4 @@ public:
 	void Run();
 private:
 	std::unique_ptr<Window> window;
-	Camera camera;
 };

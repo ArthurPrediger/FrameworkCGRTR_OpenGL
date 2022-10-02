@@ -1,0 +1,16 @@
+meshes 4
+m car ../3dModels/car/Car.obj
+m wheel ../3dModels/car/Wheel.obj
+m dragon ../3dModels/dragon/alduin.obj
+m katarina ../3dModels/katarina/katarina.obj
+
+objects 4
+# mesh       vertex shader   fragment shader  world position    world rotation   scale   destructible
+o car        TextureVS.txt   TextureFS.txt    0.0 0.0 -10.0     -90.0 0.0 0.0    1.0     false
+o wheel      TextureVS.txt   TextureFS.txt    0.0 0.0 -10.0     -90.0 0.0 0.0    1.0     false
+o dragon     TextureVS.txt   TextureFS.txt    -10.0 0.0 -10.0   0.0 -90.0 0.0    0.01    false
+o katarina   TextureVS.txt   TextureFS.txt    3.0 0.0 -10.0     0.0 0.0 0.0      0.25    true
+
+camera
+# world position   forward        up
+c 0.0 0.0 0.0      0.0 0.0 -1.0   0.0 1.0 0.0
