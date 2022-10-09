@@ -1,0 +1,24 @@
+#version 440
+
+uniform vec4 light_position;
+uniform sampler2D texture_;
+
+in vec2 textureCoordinates;
+in vec4 position;
+in vec4 normal;
+
+out vec4 frag_color;
+
+void main () 
+{
+	const float ambient_lighting = 0.15f;
+	const float diffuse_lighting = 0.7f;
+	const float specular_lighting = 0.3f;
+
+	vec4 light_direction = normalize(position - light_position);
+	float lighting = ambient_lighting + diffuse_lighting * max(0, dot(normal, (-light_direction)));
+
+	vec4 texel = texture(texture_, vec2(textureCoordinates.x, -textureCoordinates.y)); 
+
+	frag_color = lighting * texel;
+}

@@ -2,6 +2,7 @@
 #include "Scene_Loader.h"
 #include "Sphere.h"
 #include "ShootingSystem.h"
+#include "LightingPass.h"
 
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
@@ -39,6 +40,8 @@ void App::Run()
 
 	ShootingSystem shooting_sys{&camera, &gameObjects};
 
+	LightingPass lighting_pass(gameObjects, &camera);
+
 	while (!glfwWindowShouldClose(window->GetWindow())) 
 	{
 		glfwPollEvents();
@@ -52,13 +55,7 @@ void App::Run()
 
 		shooting_sys.Update(window.get(), dt);
 
-		glm::mat4 view = camera.GetViewMatrix();
-		glm::mat4 projection = camera.GetProjectionMatrix();
-
-		for (auto& gameObject : gameObjects)
-		{
-			gameObject.Draw(dt, view, projection);
-		}
+		lighting_pass.Render(dt);
 
 		glfwSwapBuffers(window->GetWindow());
 	}

@@ -10,49 +10,48 @@
 #include "Cube.h"
 #include <iostream>
 
-GameObject::GameObject(Mesh* mesh, const std::string& vs_name, const std::string& fs_name, const glm::vec3& world_position,
-	const glm::vec3& world_rotation, float scale)
+GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& world_rotation, float scale)
 	:
 	mesh(mesh),
 	transform (std::make_shared<glm::mat4>(glm::identity<glm::mat4>())),
+	world_transform(std::make_shared<glm::mat4>(glm::identity<glm::mat4>())),
 	world_position(world_position),
 	world_rotation(world_rotation),
-	scale(scale)
+	scale(scale),
+	sp(nullptr)
 {
-	std::shared_ptr<VertexShader> vs = VertexShader::Resolve(vs_name);
-	
-	std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve(fs_name);
-	
-	sp = ShaderProgram::Resolve(vs, fs);
+	SetCollisonParameters();
+}
 
+void GameObject::BindShaderProgram(std::shared_ptr<ShaderProgram> sp)
+{
+	this->sp = sp;
 	auto group = mesh->QueryGroup(0);
 	for (size_t i = 0; group != nullptr; i++, group = mesh->QueryGroup(i))
 	{
-		group->AddBindable(vs);
-
-		group->AddBindable(fs);
-
+		group->EraseBindableByType(sp->GetType(), sp->GetBindType());
 		group->AddBindable(sp);
 	}
 
 	std::shared_ptr<UniformLocation<glm::mat4>> unifLoc_transform = UniformLocation<glm::mat4>::Resolve(sp, "transform", transform);
 	sp->AddUniformLocationBindable(unifLoc_transform);
 
-	SetCollisonParameters();
+	std::shared_ptr<UniformLocation<glm::mat4>> unifLoc_world_transform = UniformLocation<glm::mat4>::Resolve(sp, "world", world_transform);
+	sp->AddUniformLocationBindable(unifLoc_world_transform);
 }
 
 void GameObject::Draw(float dt, const glm::mat4& view, const glm::mat4& projection)
 {
-	glm::mat4 world = glm::translate(glm::identity<glm::mat4>(), world_position);
-	world = glm::rotate(world, glm::radians(world_rotation.x), { 1.0f, 0.0f, 0.0f });
-	world = glm::rotate(world, glm::radians(world_rotation.y), { 0.0f, 1.0f, 0.0f });
-	world = glm::rotate(world, glm::radians(world_rotation.z), { 0.0f, 0.0f, 1.0f });
-	world = glm::scale(world, { scale, scale, scale });
+	*world_transform = glm::translate(glm::identity<glm::mat4>(), world_position);
+	*world_transform = glm::rotate(*world_transform, glm::radians(world_rotation.x), { 1.0f, 0.0f, 0.0f });
+	*world_transform = glm::rotate(*world_transform, glm::radians(world_rotation.y), { 0.0f, 1.0f, 0.0f });
+	*world_transform = glm::rotate(*world_transform, glm::radians(world_rotation.z), { 0.0f, 0.0f, 1.0f });
+	*world_transform = glm::scale(*world_transform, { scale, scale, scale });
 
-	collison_center = glm::vec3(world * glm::vec4(collison_center_no_transform, 1.0f));
+	collison_center = glm::vec3(*world_transform * glm::vec4(collison_center_no_transform, 1.0f));
 	collison_radius = collison_radius_no_transform * scale;
 
-	*transform = projection * view * world;
+	*transform = projection * view * *world_transform;
 	mesh->Draw();
 }
 

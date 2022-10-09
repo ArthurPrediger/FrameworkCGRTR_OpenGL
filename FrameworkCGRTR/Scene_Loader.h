@@ -45,12 +45,12 @@ public:
 				{
 					Mesh* mesh = &(*meshes)[std::ranges::find_if(mesh_name_linker, [&subStrs](const std::pair<std::string, size_t>& pair)
 						{ return pair.first == subStrs[1]; })->second];
-					const glm::vec3 world_pos = str_to_vec3(subStrs.begin() + 4);
-					const glm::vec3 world_rot = str_to_vec3(subStrs.begin() + 7);
-					const float scale = std::stof(subStrs[10]);
+					const glm::vec3 world_pos = str_to_vec3(subStrs.begin() + 2);
+					const glm::vec3 world_rot = str_to_vec3(subStrs.begin() + 5);
+					const float scale = std::stof(subStrs[8]);
 
-					game_objects->emplace_back(GameObject{ mesh, subStrs[2], subStrs[3], world_pos, world_rot, scale });
-					game_objects->back().is_destructible = (subStrs[11] == "true");
+					game_objects->emplace_back(GameObject{ mesh, world_pos, world_rot, scale });
+					game_objects->back().is_destructible = (subStrs[9] == "true");
 				}
 				if (subStrs[0] == "c")
 				{

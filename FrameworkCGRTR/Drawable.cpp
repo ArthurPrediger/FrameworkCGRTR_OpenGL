@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Drawable.h"
-#include "Bindable.h"
 #include "ShaderProgram.h"
 #include "BindableSet.h"
 #include "Mesh.h"
@@ -37,6 +36,32 @@ void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 	else
 	{
 		onInitializationBindables.push_back(bindable);
+	}
+}
+
+void Drawable::EraseBindableByType(const std::string& bindable_type, const Bindable::BindType& bind_type)
+{
+	if (bind_type == Bindable::BindType::OnDraw)
+	{
+		for (size_t i = 0; i < onDrawBindables.size();)
+		{
+			if (onDrawBindables[i]->GetType() == bindable_type)
+			{
+				onDrawBindables.erase(onDrawBindables.begin() + i);
+			}
+			else i++;
+		}
+	}
+	if (bind_type == Bindable::BindType::OnInitialization)
+	{
+		for (size_t i = 0; i < onInitializationBindables.size();)
+		{
+			if (onInitializationBindables[i]->GetType() == bindable_type)
+			{
+				onInitializationBindables.erase(onInitializationBindables.begin() + i);
+			}
+			else i++;
+		}
 	}
 }
 

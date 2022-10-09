@@ -161,6 +161,7 @@
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Group.cpp" />
+    <ClCompile Include="LightingPass.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="LightingPass.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MTL_Loader.h" />
@@ -205,6 +207,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="LightingFS.txt" />
+    <Text Include="LightingVS.txt" />
     <Text Include="SimpleFragmentShader.txt" />
     <Text Include="SimpleVertexShader.txt" />
     <Text Include="Scene.txt" />

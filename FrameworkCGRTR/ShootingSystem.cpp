@@ -2,6 +2,11 @@
 #include "Camera.h"
 #include "Sphere.h"
 #include "Window.h"
+#include "Bindable.h"
+#include "VertexShader.h"
+#include "FragmentShader.h"
+#include "ShaderProgram.h"
+#include "UniformLocation.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtx/norm.hpp>
@@ -9,9 +14,18 @@
 
 Projectile::Projectile(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& velocity_direction)
 	:
-	GameObject(mesh, "SimpleVertexShader.txt", "SimpleFragmentShader.txt", world_position),
+	GameObject(mesh, world_position),
 	velocity_direction(velocity_direction)
-{}
+{
+	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("SimpleVertexShader.txt");
+	mesh->QueryGroup(0)->AddBindable(vs);
+
+	std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("SimpleFragmentShader.txt");
+	mesh->QueryGroup(0)->AddBindable(fs);
+
+	std::shared_ptr<ShaderProgram> sp = ShaderProgram::Resolve(vs, fs);
+	BindShaderProgram(sp);
+}
 
 void Projectile::Update(float dt)
 {

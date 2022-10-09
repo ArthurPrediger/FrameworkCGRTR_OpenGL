@@ -31,6 +31,9 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{79e6e630-d166-42da-b6c2-c264d1ee69ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes">
+      <UniqueIdentifier>{598bf33c-74a3-4350-b501-a81754b21285}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="ShootingSystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingPass.cpp">
+      <Filter>Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +179,9 @@
     <ClInclude Include="Scene_Loader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="LightingPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SimpleFragmentShader.txt">
@@ -189,6 +198,12 @@
     </Text>
     <Text Include="Scene.txt">
       <Filter>Scenes</Filter>
+    </Text>
+    <Text Include="LightingVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="LightingFS.txt">
+      <Filter>Shaders</Filter>
     </Text>
   </ItemGroup>
 </Project>
