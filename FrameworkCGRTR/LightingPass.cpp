@@ -11,7 +11,7 @@ LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera
 	:
 	game_objects(game_objects),
 	camera(camera),
-	point_light_position(std::make_shared<glm::vec4>(glm::vec4{ 0.0f,-10.0f, -15.0f, 0.0f }))
+	point_light_position(std::make_shared<glm::vec4>(glm::vec4{ 0.0f, 10.0f, 5.0f, 0.0f }))
 {
 	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("LightingVS.txt");
 	onInitializationBindables.push_back(vs);

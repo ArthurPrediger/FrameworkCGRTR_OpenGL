@@ -2,6 +2,7 @@
 
 #include "Mesh.h"
 #include "MTL_Loader.h"
+#include "CalculateNormals.h"
 #include <vector>
 #include <array>
 #include <iostream>
@@ -156,7 +157,14 @@ public:
 			if (vertices.vertsTexts.size() == 0)
 				vertices.vertsTexts = { { 0.0f , 0.0f } };
 			if (vertices.vertsNormals.size() == 0)
-				vertices.vertsNormals = { { 0.0f , 0.0f, 0.0f } };
+			{
+				//vertices.vertsNormals = { { 0.0f , 0.0f, 0.0f } };
+
+				for (auto& group : groups)
+				{
+					CalculateNormals(vertices.vertsPos, group.faces, vertices.vertsNormals);
+				}
+			}				
 
 			Mesh mesh{ vertices };
 

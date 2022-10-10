@@ -6,6 +6,7 @@
 
 class Group : public Drawable
 {
+	friend class OBJ_Loader;
 public:
 	struct Face
 	{
