@@ -14,9 +14,14 @@ void main ()
 	const float ambient_lighting = 0.15f;
 	const float diffuse_lighting = 0.7f;
 	const float specular_lighting = 0.3f;
+	const float distance_v_to_l = length(position - light_position);
+	const float c1 = 0.4f;
+	const float c2 = 0.05f * distance_v_to_l;
+	const float c3 = 0.01f * distance_v_to_l * distance_v_to_l;
+	const float attenuation_factor = min(1.0f / (c1 + c2 + c3), 1.0f);
 
 	vec4 light_direction = normalize(position - light_position);
-	float lighting = ambient_lighting + diffuse_lighting * max(0, dot(normal, (-light_direction)));
+	float lighting = ambient_lighting + attenuation_factor * diffuse_lighting * max(0, dot(normal, (-light_direction)));
 
 	vec4 texel = texture(texture_, vec2(textureCoordinates.x, -textureCoordinates.y)); 
 

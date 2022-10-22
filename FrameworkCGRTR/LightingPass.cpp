@@ -6,12 +6,13 @@
 #include "UniformLocation.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "Sphere.h"
 
 LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera)
 	:
 	game_objects(game_objects),
 	camera(camera),
-	point_light_position(std::make_shared<glm::vec4>(glm::vec4{ 0.0f, 10.0f, 5.0f, 0.0f }))
+	point_light_position(std::make_shared<glm::vec4>(glm::vec4{ 0.0f, 5.0f, -2.0f, 0.0f }))
 {
 	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("LightingVS.txt");
 	onInitializationBindables.push_back(vs);
@@ -29,6 +30,18 @@ LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera
 	{
 		game_object.BindShaderProgram(sp);
 	}
+
+	light_mesh = std::make_unique<Mesh>(Sphere::GetMesh());
+
+	std::shared_ptr<VertexShader> vs_light = VertexShader::Resolve("SimpleVertexShader.txt");
+	light_mesh->QueryGroup(0)->AddBindable(vs_light);
+
+	std::shared_ptr<FragmentShader> fs_light = FragmentShader::Resolve("SimpleFragmentShader.txt");
+	light_mesh->QueryGroup(0)->AddBindable(fs_light);
+
+	light_object = std::make_unique<GameObject>(light_mesh.get(), glm::vec3(*point_light_position), glm::vec3(0.0f), 0.4f);
+	std::shared_ptr<ShaderProgram> sp_light = ShaderProgram::Resolve(vs_light, fs_light);
+	light_object->BindShaderProgram(sp_light);
 };
 
 void LightingPass::Render(float dt)
@@ -45,4 +58,6 @@ void LightingPass::Render(float dt)
 	{
 		gameObject.Draw(dt, view, projection);
 	}
+
+	light_object->Draw(dt, view, projection);
 };

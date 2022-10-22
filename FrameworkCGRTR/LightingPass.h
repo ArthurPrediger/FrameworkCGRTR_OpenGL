@@ -18,4 +18,6 @@ private:
 	std::vector<GameObject>& game_objects;
 	Camera* camera;
 	std::shared_ptr<glm::vec4> point_light_position;
+	std::unique_ptr<class Mesh> light_mesh;
+	std::unique_ptr<GameObject> light_object;
 };
