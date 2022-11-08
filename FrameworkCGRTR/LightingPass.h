@@ -17,6 +17,7 @@ private:
 	std::vector<std::shared_ptr<Bindable>> onDrawBindables;
 	std::vector<GameObject>& game_objects;
 	Camera* camera;
+	std::shared_ptr<glm::vec4> camera_position;
 	std::shared_ptr<glm::vec4> point_light_position;
 	std::unique_ptr<class Mesh> light_mesh;
 	std::unique_ptr<GameObject> light_object;

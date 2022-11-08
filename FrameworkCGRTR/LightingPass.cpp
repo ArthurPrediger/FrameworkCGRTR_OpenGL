@@ -12,6 +12,7 @@ LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera
 	:
 	game_objects(game_objects),
 	camera(camera),
+	camera_position(std::make_shared<glm::vec4>(camera->GetPosition(), 1.0f)),
 	point_light_position(std::make_shared<glm::vec4>(glm::vec4{ 0.0f, 5.0f, -2.0f, 0.0f }))
 {
 	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("LightingVS.txt");
@@ -25,6 +26,9 @@ LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera
 
 	std::shared_ptr<UniformLocation<glm::vec4>> unifLoc_light_pos = UniformLocation<glm::vec4>::Resolve(sp, "light_position", point_light_position);
 	sp->AddUniformLocationBindable(unifLoc_light_pos);
+
+	std::shared_ptr<UniformLocation<glm::vec4>> unifLoc_camera_pos = UniformLocation<glm::vec4>::Resolve(sp, "camera_position", camera_position);
+	sp->AddUniformLocationBindable(unifLoc_camera_pos);
 
 	for (auto& game_object : game_objects)
 	{
@@ -53,6 +57,7 @@ void LightingPass::Render(float dt)
 
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection = camera->GetProjectionMatrix();
+	*camera_position = view * glm::vec4{ camera->GetPosition(), 1.0f };
 
 	for (auto& gameObject : game_objects)
 	{
