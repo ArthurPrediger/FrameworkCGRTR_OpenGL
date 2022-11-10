@@ -13,6 +13,7 @@ public:
 	void Draw();
 	void AddBindable(std::shared_ptr<Bindable> bindable);
 	void AddMaterial(std::shared_ptr<class Material> material);
+	std::shared_ptr<Bindable> GetBindableByType(const std::string& bindable_type, const Bindable::BindType& bind_type);
 	void EraseBindableByType(const std::string& bindable_type, const Bindable::BindType& bind_type);
 private:
 	std::vector<std::shared_ptr<Bindable>> onInitializationBindables;

@@ -21,6 +21,7 @@ void Drawable::Draw()
 	if (material)
 	{
 		material->BindTextureMaps();
+		material->BindProperties();
 	}
 	glDrawArrays(GL_TRIANGLES, 0, GLsizei(numVertices));
 	glBindVertexArray(0);
@@ -32,11 +33,41 @@ void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 	if (bindable->GetBindType() == Bindable::BindType::OnDraw)
 	{
 		onDrawBindables.push_back(bindable);
+
+		if (bindable->GetType() == "ShaderProgram" && material)
+			material->SetPropertiesBindTarget(std::static_pointer_cast<ShaderProgram>(GetBindableByType("ShaderProgram", Bindable::BindType::OnDraw)));
 	}
 	else
 	{
 		onInitializationBindables.push_back(bindable);
 	}
+}
+
+void Drawable::AddMaterial(std::shared_ptr<Material> material)
+{
+	this->material = material;
+}
+
+std::shared_ptr<Bindable> Drawable::GetBindableByType(const std::string& bindable_type, const Bindable::BindType& bind_type)
+{
+	if (bind_type == Bindable::BindType::OnDraw)
+	{
+		for (auto& bindable : onDrawBindables)
+		{
+			if (bindable->GetType() == bindable_type)
+				return bindable;
+		}
+	}
+	if (bind_type == Bindable::BindType::OnInitialization)
+	{
+		for (auto& bindable : onInitializationBindables)
+		{
+			if (bindable->GetType() == bindable_type)
+				return bindable;
+		}
+	}
+
+	return nullptr;
 }
 
 void Drawable::EraseBindableByType(const std::string& bindable_type, const Bindable::BindType& bind_type)
@@ -63,9 +94,4 @@ void Drawable::EraseBindableByType(const std::string& bindable_type, const Binda
 			else i++;
 		}
 	}
-}
-
-void Drawable::AddMaterial(std::shared_ptr<Material> material)
-{
-	this->material = material;
 }

@@ -31,7 +31,7 @@ public:
 			std::vector<std::string> subStrs;
 			std::string line;
 
-			auto loadVertex = [&line, &subStrs](unsigned int nDimensions) {
+			auto loadVertex = [&subStrs](unsigned int nDimensions) {
 				float x = 0, y = 0, z = 0;
 				switch (nDimensions)
 				{

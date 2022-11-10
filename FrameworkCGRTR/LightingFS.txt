@@ -2,7 +2,11 @@
 
 uniform vec4 light_position;
 uniform vec4 camera_position;
-uniform sampler2D texture_;
+uniform vec4 diffuse_color;
+uniform vec4 ambient_color;
+uniform vec4 specular_color;
+uniform float specular_glow;
+uniform sampler2D diffuse_texture;
 
 in vec2 textureCoordinates;
 in vec4 position;
@@ -12,13 +16,9 @@ out vec4 frag_color;
 
 void main () 
 {
-	const vec4 diffuse_color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	const vec4 ambient_color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	const vec4 specular_color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	const float diffuse_intensity = 0.6f;
 	const float ambient_intensity = 0.15f;
 	const float specular_intensity = 1.0f;
-	const float specular_glow = 20.0f;
 
 	const float distance_frag_to_light = length(position - light_position);
 	const float c1 = 0.4f;
@@ -39,7 +39,7 @@ void main ()
 
 	vec4 lighting = clamp(ambient + attenuation_factor * (diffuse + specular), 0.0f, 1.0f);
 
-	vec4 texel = texture(texture_, vec2(textureCoordinates.x, -textureCoordinates.y)); 
+	vec4 texel = texture(diffuse_texture, vec2(textureCoordinates.x, -textureCoordinates.y)); 
 
 	frag_color = lighting * texel;
 }

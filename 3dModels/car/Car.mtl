@@ -6,9 +6,9 @@
 # 
 
 newmtl body
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd rb0_main.png
@@ -22,9 +22,9 @@ map_kA
 map_Ns 
 
 newmtl generic
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd generic_main.png
@@ -38,9 +38,9 @@ map_kA
 map_Ns 
 
 newmtl wheel
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd rb0_wheel.png
@@ -54,9 +54,9 @@ map_kA
 map_Ns 
 
 newmtl glow
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd light_glow.png
@@ -70,9 +70,9 @@ map_kA
 map_Ns 
 
 newmtl tyre
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd tyre.png
@@ -86,9 +86,9 @@ map_kA
 map_Ns 
 
 newmtl tread
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd tread_slick.png
@@ -102,9 +102,9 @@ map_kA
 map_Ns 
 
 newmtl glass
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd glass.png

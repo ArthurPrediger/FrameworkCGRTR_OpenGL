@@ -6,9 +6,9 @@
 # 
 
 newmtl mirrors
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd 
@@ -22,9 +22,9 @@ map_kA
 map_Ns 
 
 newmtl flag
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_indicator.png
@@ -38,9 +38,9 @@ map_kA
 map_Ns 
 
 newmtl digi
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_digi_tach.png
@@ -54,9 +54,9 @@ map_kA
 map_Ns 
 
 newmtl digi0
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_digi_placeholder.png
@@ -70,9 +70,9 @@ map_kA
 map_Ns 
 
 newmtl info
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_info_pod.png
@@ -86,9 +86,9 @@ map_kA
 map_Ns 
 
 newmtl led
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_led.png
@@ -102,9 +102,9 @@ map_kA
 map_Ns 
 
 newmtl steering
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
-Ks 0 0 0
+Ks 1 1 1
 illum 2
 Ns 2
 map_Kd int_rb0_main.png
