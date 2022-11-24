@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-std::vector<std::string> Split(const std::string& str, char delimeter)
+inline std::vector<std::string> Split(const std::string& str, char delimeter)
 {
 	std::vector<std::string> subStrings{};
 	std::string subStr{};

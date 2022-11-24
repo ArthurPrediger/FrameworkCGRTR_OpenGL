@@ -10,7 +10,7 @@
 #include "Cube.h"
 #include <iostream>
 
-GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& world_rotation, float scale)
+GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& world_rotation, float scale, int description)
 	:
 	mesh(mesh),
 	transform (std::make_shared<glm::mat4>(glm::identity<glm::mat4>())),
@@ -18,7 +18,9 @@ GameObject::GameObject(Mesh* mesh, const glm::vec3& world_position, const glm::v
 	world_position(world_position),
 	world_rotation(world_rotation),
 	scale(scale),
-	sp(nullptr)
+	sp(nullptr),
+	description(description),
+	default_world_rotation(world_rotation)
 {
 	SetCollisonParameters();
 }
@@ -57,21 +59,29 @@ void GameObject::Draw(float dt, const glm::mat4& view, const glm::mat4& projecti
 
 void GameObject::SetCollisonParameters()
 {
-	const auto& vertices = mesh->GetVertices().vertsPos;
-
-	glm::vec3 high_extrem = { 0.0f, 0.0f, 0.0f }, low_extrem = { 0.0f, 0.0f, 0.0f };
-
-	for (const auto& vertex : vertices)
+	if (description & GameObjectDescriptor::collidable || description & GameObjectDescriptor::destructible)
 	{
-		high_extrem.x = std::max(high_extrem.x, vertex.x);
-		high_extrem.y = std::max(high_extrem.y, vertex.y);
-		high_extrem.z = std::max(high_extrem.z, vertex.z);
-		low_extrem.x = std::min(low_extrem.x, vertex.x);
-		low_extrem.y = std::min(low_extrem.y, vertex.y);
-		low_extrem.z = std::min(low_extrem.z, vertex.z);
-	}
+		const auto& vertices = mesh->GetVertices().vertsPos;
 
-	glm::vec3 diff = high_extrem - low_extrem;
-	collison_radius_no_transform = std::max(std::max(diff.x, diff.y), diff.z) / 2.0f;
-	collison_center_no_transform = (high_extrem + low_extrem) / 2.0f;
+		glm::vec3 high_extrem = { 0.0f, 0.0f, 0.0f }, low_extrem = { 0.0f, 0.0f, 0.0f };
+
+		for (const auto& vertex : vertices)
+		{
+			high_extrem.x = std::max(high_extrem.x, vertex.x);
+			high_extrem.y = std::max(high_extrem.y, vertex.y);
+			high_extrem.z = std::max(high_extrem.z, vertex.z);
+			low_extrem.x = std::min(low_extrem.x, vertex.x);
+			low_extrem.y = std::min(low_extrem.y, vertex.y);
+			low_extrem.z = std::min(low_extrem.z, vertex.z);
+		}
+
+		glm::vec3 diff = high_extrem - low_extrem;
+		collison_radius_no_transform = std::max(std::max(diff.x, diff.y), diff.z) / 2.0f;
+		collison_center_no_transform = (high_extrem + low_extrem) / 2.0f;
+	}
+	else
+	{
+		collison_radius_no_transform = 0.0f;
+		collison_center_no_transform = glm::vec3(0);
+	}
 }

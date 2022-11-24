@@ -35,15 +35,16 @@ private:
 	{
 		const char* GetPropertyType() const override
 		{
-			return typeid(property).name();
-		};
+			return property_type;
+		}
 		void Bind() override
 		{
 			if(uniformSetter)
 				*uniformSetter = property;
 		}
 		T property;
-		std::shared_ptr<T> uniformSetter;
+		const char* property_type = typeid(T).name();
+		std::shared_ptr<T> uniformSetter = nullptr;
 	};
 private:
 	std::string mtllib_file_name;

@@ -3,10 +3,8 @@
 #include "Sphere.h"
 #include "ShootingSystem.h"
 #include "LightingPass.h"
+#include "AnimationSystem.h"
 
-#include <glm/glm.hpp> 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
 App::App()
@@ -38,6 +36,8 @@ void App::Run()
 
 	Timer timer{};
 
+	AnimationSystem animation_sys{ &gameObjects };
+
 	ShootingSystem shooting_sys{&camera, &gameObjects};
 
 	LightingPass lighting_pass(gameObjects, &camera);
@@ -52,6 +52,8 @@ void App::Run()
 		const float dt = timer.Tick();
 
 		camera.Update(window.get(), dt);
+
+		animation_sys.Update(dt);
 
 		shooting_sys.Update(window.get(), dt);
 

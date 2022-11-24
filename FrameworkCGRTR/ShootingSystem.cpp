@@ -14,7 +14,7 @@
 
 Projectile::Projectile(Mesh* mesh, const glm::vec3& world_position, const glm::vec3& velocity_direction)
 	:
-	GameObject(mesh, world_position),
+	GameObject(mesh, world_position, {}, 1.0f, 1),
 	velocity_direction(velocity_direction)
 {
 	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("SimpleVertexShader.txt");
@@ -61,7 +61,7 @@ void ShootingSystem::Update(Window* window, float dt)
 			if (glm::dot(diff, diff) < (radius_sum * radius_sum) &&
 				glm::dot(projectile.GetVelocityDirection(), diff) < 0.0f)
 			{
-				if (object.is_destructible)
+				if (object.description & GameObjectDescriptor::destructible)
 				{
 					objects->erase(objects->begin() + index);
 					projectile.is_destroyed = true;

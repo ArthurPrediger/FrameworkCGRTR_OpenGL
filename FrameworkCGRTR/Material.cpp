@@ -28,7 +28,7 @@ void Material::SetPropertiesBindTarget(std::shared_ptr<ShaderProgram> sp)
 	{
 		if (property->GetPropertyType() == typeid(float).name())
 		{
-			auto property_casted = std::dynamic_pointer_cast<TemplatedMaterialProperty<float>>(property);
+			auto property_casted = std::static_pointer_cast<TemplatedMaterialProperty<float>>(property);
 			auto pValue = std::make_shared<float>(property_casted->property);
 			auto unifLoc = UniformLocation<float>::Resolve(sp, property->name, pValue);
 			property_casted->uniformSetter = pValue;
@@ -36,7 +36,7 @@ void Material::SetPropertiesBindTarget(std::shared_ptr<ShaderProgram> sp)
 		}
 		else if (property->GetPropertyType() == typeid(glm::vec4).name())
 		{
-			auto property_casted = std::dynamic_pointer_cast<TemplatedMaterialProperty<glm::vec4>>(property);
+			auto property_casted = std::static_pointer_cast<TemplatedMaterialProperty<glm::vec4>>(property);
 			auto pValue = std::make_shared<glm::vec4>(property_casted->property);
 			auto unifLoc = UniformLocation<glm::vec4>::Resolve(sp, property->name, pValue);
 			property_casted->uniformSetter = pValue;
