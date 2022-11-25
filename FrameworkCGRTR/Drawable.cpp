@@ -35,7 +35,7 @@ void Drawable::AddBindable(std::shared_ptr<Bindable> bindable)
 		onDrawBindables.push_back(bindable);
 
 		if (bindable->GetType() == "ShaderProgram" && material)
-			material->SetPropertiesBindTarget(std::static_pointer_cast<ShaderProgram>(GetBindableByType("ShaderProgram", Bindable::BindType::OnDraw)));
+			material->SetBindTarget(std::static_pointer_cast<ShaderProgram>(GetBindableByType("ShaderProgram", Bindable::BindType::OnDraw)));
 	}
 	else
 	{

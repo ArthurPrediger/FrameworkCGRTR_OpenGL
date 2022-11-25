@@ -1,10 +1,14 @@
 #include "Material.h"
 #include "Bindable.h"
+#include "Texture2D.h"
 #include "ShaderProgram.h"
 #include "UniformLocation.h"
+
 #include <glm/glm.hpp> 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <ranges>
 
 Material::Material(const std::string& mtllib_file_name, const std::string& name)
 	:
@@ -22,7 +26,7 @@ void Material::BindTextureMaps()
 	}
 }
 
-void Material::SetPropertiesBindTarget(std::shared_ptr<ShaderProgram> sp)
+void Material::SetBindTarget(std::shared_ptr<ShaderProgram> sp)
 {
 	for (auto& property : properties)
 	{
@@ -43,6 +47,11 @@ void Material::SetPropertiesBindTarget(std::shared_ptr<ShaderProgram> sp)
 			sp->AddUniformLocationBindable(unifLoc);
 		}
 	}
+
+	for (auto& texture : textureMaps)
+	{
+		texture->SetBindTarget(sp);
+	}
 }
 
 void Material::BindProperties()
@@ -51,4 +60,9 @@ void Material::BindProperties()
 	{
 		property->Bind();
 	}
+}
+
+bool Material::HasTextureType(const std::string& texture_type) const
+{
+	return std::ranges::find(texture_types, texture_type) != texture_types.end();
 }

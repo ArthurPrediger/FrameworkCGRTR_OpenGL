@@ -28,6 +28,28 @@ std::vector<std::shared_ptr<Material>> MTL_Loader::LoadMtllib(const std::string&
 			return glm::vec4(x, y, z, 1.0f);
 		};
 
+		auto addMissingTextureMaps = [](std::shared_ptr<Material> material)
+		{
+			std::vector<unsigned char> simple_2x2_texture = {
+				255, 255, 255, 255,
+				255, 255, 255, 255,
+				255, 255, 255, 255,
+				255, 255, 255, 255
+			};
+			if (!material->HasTextureType("diffuse"))
+			{
+				auto texture = Texture2D::Resolve(simple_2x2_texture, "simple_2x2_texture", "diffuse_texture");
+				material->textureMaps.push_back(std::move(texture));
+				material->texture_types.push_back("diffuse");
+			}
+			if (!material->HasTextureType("specular"))
+			{
+				auto texture = Texture2D::Resolve(simple_2x2_texture, "simple_2x2_texture", "specular_texture");
+				material->textureMaps.push_back(std::move(texture));
+				material->texture_types.push_back("specular");
+			}
+		};
+
 		while (!file.eof())
 		{
 			std::getline(file, line);
@@ -38,6 +60,7 @@ std::vector<std::shared_ptr<Material>> MTL_Loader::LoadMtllib(const std::string&
 			{
 				if (material)
 				{
+					addMissingTextureMaps(material);
 					materials.push_back(std::move(material));
 					material.reset();
 				}
@@ -78,8 +101,20 @@ std::vector<std::shared_ptr<Material>> MTL_Loader::LoadMtllib(const std::string&
 				texture_path.erase(offset + 1, texture_path.size() - offset - 1);
 				for (size_t i = 1; i < subStrs.size(); i++)
 					texture_path.append(subStrs[1]);
-				auto texture = Texture2D::Resolve(texture_path);
+				auto texture = Texture2D::Resolve(texture_path, "diffuse_texture");
 				material->textureMaps.push_back(std::move(texture));
+				material->texture_types.push_back("diffuse");
+			}
+			else if (subStrs[0] == "map_Ks" && subStrs[1] != "")
+			{
+				std::string texture_path = mtllib_path;
+				auto offset = texture_path.find_last_of("/");
+				texture_path.erase(offset + 1, texture_path.size() - offset - 1);
+				for (size_t i = 1; i < subStrs.size(); i++)
+					texture_path.append(subStrs[1]);
+				auto texture = Texture2D::Resolve(texture_path, "specular_texture");
+				material->textureMaps.push_back(std::move(texture));
+				material->texture_types.push_back("specular");
 			}
 		}
 
@@ -87,6 +122,7 @@ std::vector<std::shared_ptr<Material>> MTL_Loader::LoadMtllib(const std::string&
 
 		if (material)
 		{
+			addMissingTextureMaps(material);
 			materials.push_back(std::move(material));
 		}
 

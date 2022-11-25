@@ -19,8 +19,9 @@ public:
 		return name;
 	}
 	void BindTextureMaps();
-	void SetPropertiesBindTarget(std::shared_ptr<class ShaderProgram> sp);
+	void SetBindTarget(std::shared_ptr<class ShaderProgram> sp);
 	void BindProperties();
+	bool HasTextureType(const std::string& texture_type) const;
 private:
 	friend class MTL_Loader;
 	struct MaterialProperty
@@ -49,6 +50,7 @@ private:
 private:
 	std::string mtllib_file_name;
 	std::string name;
-	std::vector<std::shared_ptr<class Bindable>> textureMaps;
+	std::vector<std::string> texture_types;
+	std::vector<std::shared_ptr<class Texture2D>> textureMaps;
 	std::vector<std::shared_ptr<MaterialProperty>> properties;
 };
