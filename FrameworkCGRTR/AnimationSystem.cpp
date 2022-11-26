@@ -78,7 +78,8 @@ void AnimationSystem::Update(float dt)
 				theta = glm::degrees(glm::two_pi<float>()) - theta;
 
 			auto phi = glm::degrees(asin(glm::dot({ 0.0f, 1.0f, 0.0f }, direction)));
-			if (direction.z > 0) phi *= -1.0f;
+			if (direction.z > 0)
+				phi = glm::degrees(glm::two_pi<float>()) - phi;
 
 			const auto& default_rot = object.GetDefaultWorldRotation();
 			object.SetWorldRotation({ default_rot.x + phi, default_rot.y, default_rot.z + theta });

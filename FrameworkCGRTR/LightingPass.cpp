@@ -18,7 +18,7 @@ LightingPass::LightingPass(std::vector<GameObject>& game_objects, Camera* camera
 	std::shared_ptr<VertexShader> vs = VertexShader::Resolve("LightingVS.txt");
 	onInitializationBindables.push_back(vs);
 
-	std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("LightingFS.txt");
+	std::shared_ptr<FragmentShader> fs = FragmentShader::Resolve("LightingFogFS.txt");
 	onInitializationBindables.push_back(fs);
 
 	std::shared_ptr<ShaderProgram> sp = ShaderProgram::Resolve(vs, fs);
@@ -57,7 +57,7 @@ void LightingPass::Render(float dt)
 
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection = camera->GetProjectionMatrix();
-	*camera_position = view * glm::vec4{ camera->GetPosition(), 1.0f };
+	*camera_position = glm::vec4{ camera->GetPosition(), 1.0f };
 
 	for (auto& gameObject : game_objects)
 	{

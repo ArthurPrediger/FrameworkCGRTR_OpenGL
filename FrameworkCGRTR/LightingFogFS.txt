@@ -19,7 +19,7 @@ void main ()
 {
 	const float diffuse_intensity = 1.0f;
 	const float ambient_intensity = 0.3f;
-	const float specular_intensity = 0.8f;
+	const float specular_intensity = 1.0f;
 
 	const float frag_to_light_distance = length(position - light_position);
 	const float c1 = 0.4f;
@@ -40,5 +40,9 @@ void main ()
 
 	vec4 lighting = clamp(ambient + attenuation_factor * (diffuse + specular), 0.0f, 1.0f);
 
-	frag_color = lighting;
+	const float frag_to_camera_distance = length(position - camera_position) / 100.0f;
+	const vec4 fog_color = { 0.8f, 0.8f, 0.8f, 1.0f };
+	const float fatm = 1.0f - frag_to_camera_distance;
+
+	frag_color = lighting * fatm + (1.0f - fatm) * fog_color;
 }

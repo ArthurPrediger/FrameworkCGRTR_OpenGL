@@ -218,6 +218,7 @@
     <Text Include="SimpleFragmentShader.txt" />
     <Text Include="SimpleVertexShader.txt" />
     <Text Include="Scene.txt" />
+    <Text Include="LightingFogFS.txt" />
     <Text Include="TextureFS.txt" />
     <Text Include="TextureVS.txt" />
   </ItemGroup>

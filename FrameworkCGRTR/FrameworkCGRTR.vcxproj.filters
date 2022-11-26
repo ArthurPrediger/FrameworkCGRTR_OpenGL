@@ -223,5 +223,8 @@
     <Text Include="LightingFS.txt">
       <Filter>Shaders</Filter>
     </Text>
+    <Text Include="LightingFogFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
   </ItemGroup>
 </Project>
